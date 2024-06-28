@@ -1,12 +1,10 @@
 package net.smileycorp.rawores.common;
 
 import com.google.common.collect.Maps;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.registries.ForgeRegistry;
 
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +57,10 @@ public class OreHandler {
     
     public OreEntry getEntry(String ore) {
         return entries.get(ore);
+    }
+    
+    public Collection<String> getOreNames() {
+        return entries.keySet();
     }
     
 }
