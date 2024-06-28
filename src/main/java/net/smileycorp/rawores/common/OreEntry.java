@@ -2,7 +2,6 @@ package net.smileycorp.rawores.common;
 
 import net.minecraft.item.ItemStack;
 
-import java.util.Dictionary;
 import java.util.List;
 
 public class OreEntry {
@@ -11,7 +10,6 @@ public class OreEntry {
     private final List<ItemStack> ores;
     private final ItemStack ingot;
     private final ItemRawOre item;
-    private int colour;
     
     public OreEntry(String name, List<ItemStack> ores, ItemStack ingot) {
         this.name = name;
@@ -34,14 +32,6 @@ public class OreEntry {
     
     public ItemRawOre getItem() {
         return item;
-    }
-    
-    public int getColour() {
-        return colour;
-    }
-    
-    public void setColour(int colour) {
-        this.colour = colour;
     }
     
     public boolean contains(ItemStack ore) {
