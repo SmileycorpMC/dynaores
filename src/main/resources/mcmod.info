@@ -1,0 +1,16 @@
+[
+{
+  "modid": "raw_ores",
+  "name": "Raw Ores",
+  "description": "",
+  "version": "1.0.0",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Smileycorp"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
