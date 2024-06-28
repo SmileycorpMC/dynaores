@@ -30,18 +30,24 @@ public class CommonProxy {
     
     public void serverStart(FMLServerStartingEvent event) {}
     
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    //high priority so hopefully fortune will stack with other modifiers
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void dropItem(BlockEvent.HarvestDropsEvent event) {
+        if (event.isSilkTouching()) return;
         List<ItemStack> drops = event.getDrops();
         IBlockState state = event.getState();
+        //use try/catch here because blocks without items can't be oredicted and the game will crash if you try to make one
         try {
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
+            //get the first oredictionary that matches our pattern
             String ore = getOre(stack);
             if (ore == null) return;
+            //get the registered ore entry corresponding to the block we just broke
             OreEntry entry = OreHandler.INSTANCE.getEntry(ore.replace("ore", ""));
             if (entry == null) return;
             for (int i = 0; i < drops.size(); i++) {
                 ItemStack drop = drops.get(i);
+                //check the drop is the same as the block we just broke so we don't modify extra or changed drops if other mods added them first
                 if (!ItemStack.areItemsEqual(stack, drop)) continue;
                 drops.set(i, new ItemStack(entry.getItem(), getFortune(event.getFortuneLevel(), event.getHarvester().getRNG())));
             }
@@ -56,12 +62,14 @@ public class CommonProxy {
         return null;
     }
     
+    //default to 1, might add a config to change this per ore in future
     private int getFortune(int fortune, Random rand) {
         return getFortune(fortune, 1, rand);
     }
     
+    //ore drop formula copied from diamond ore, it's the same formula used by the ore_drops loot function in modern versions
     private int getFortune(int fortune, int base, Random rand) {
-        int drops = (Math.max(0, rand.nextInt(fortune + 2) - 1) + 1 + fortune) * base;
+        int drops = (Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base;
         return drops;
     }
     

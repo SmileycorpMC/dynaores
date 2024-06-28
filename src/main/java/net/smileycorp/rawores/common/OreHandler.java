@@ -16,6 +16,7 @@ public class OreHandler {
     
     private final Map<String, OreEntry> entries = Maps.newHashMap();
     
+    //generate all ore entries used by the mod
     public void buildOreProperties() {
         //find all ore dictionary entries that match the pattern ore*****
         for (String ore : OreDictionary.getOreNames()) {
@@ -24,7 +25,7 @@ public class OreHandler {
             //make sure we don't accidentally register an entry twice (somehow)
             if (entries.containsKey(name)) continue;
             List<ItemStack> ores = OreDictionary.getOres(ore);
-            //check that one of the ores is a block so we don't add raw items for things like knightmetal
+            //check that one of the ores is a block, so we don't add raw items for things like knightmetal
             if (!hasBlock(ores)) continue;
             //check if there is a corresponding ingot***** to filter out nonmetals like gems and dusts
             String ingot = ore.replace("ore", "ingot");

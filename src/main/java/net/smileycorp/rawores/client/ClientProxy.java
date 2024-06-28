@@ -40,6 +40,7 @@ public class ClientProxy extends CommonProxy {
         for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
             ModelResourceLocation loc = new ModelResourceLocation(Constants.locStr(entry.getName() + ".raw_ore"));
             ModelLoader.setCustomModelResourceLocation(entry.getItem(), 0, loc);
+            //have to manually copy entries to the model mesher because we register our model definitions too late for the game to automatically do it
             mesher.register(entry.getItem(), 0, loc);
         }
         for (OreEntry entry : OreHandler.INSTANCE.getOres()) mc.getItemColors().registerItemColorHandler(OreModelLoader.INSTANCE::getColour, entry.getItem());

@@ -1,6 +1,7 @@
 package net.smileycorp.rawores.common;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class OreEntry {
         this.ores = ores;
         this.ingot = ingot;
         this.item = new ItemRawOre(this);
+        GameRegistry.addSmelting(item, ingot, 0.1f);
     }
     
     public String getName() {
