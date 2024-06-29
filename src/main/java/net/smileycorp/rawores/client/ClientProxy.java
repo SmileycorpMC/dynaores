@@ -13,7 +13,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.smileycorp.rawores.common.*;
+import net.smileycorp.rawores.common.CommonProxy;
+import net.smileycorp.rawores.common.Constants;
+import net.smileycorp.rawores.common.RawOres;
+import net.smileycorp.rawores.common.data.OreEntry;
+import net.smileycorp.rawores.common.data.OreHandler;
 
 public class ClientProxy extends CommonProxy {
     

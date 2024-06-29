@@ -1,10 +1,11 @@
-package net.smileycorp.rawores.common;
+package net.smileycorp.rawores.common.data;
 
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+import net.smileycorp.rawores.common.RawOres;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,12 +1,15 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+		maven { url "https://repo.spongepowered.org/repository/maven-public/" }
         jcenter()
         mavenCentral()
 		gradlePluginPortal()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+		classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+		classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
     }
 }
 
@@ -19,6 +22,8 @@ repositories {
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
 version = "1.12.2-1.0.0-dev"
@@ -56,6 +61,14 @@ minecraft {
     }
 }
 
+mixin {
+    add sourceSets.main, "mixins.raw_ores.refmap.json"
+}
+
+repositories {
+    maven { url = 'https://repo.spongepowered.org/maven' }
+}
+
 configurations {
     embed
     compile.extendsFrom(embed)
@@ -63,6 +76,7 @@ configurations {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+	implementation "org.spongepowered:mixin:0.8"
 	implementation "curse.maven:jei-238222:4393461"
 
 }
@@ -80,10 +94,26 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
 			"ForceLoadAsMod": true,
 			"FMLAT": "raw_ores_at.cfg",
-			"FMLCorePluginContainsFMLMod": true
+			"FMLCorePluginContainsFMLMod": true,
+			"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+			"MixinConfigs": "mixins.raw_ores.json"
         ])
         
     }
+}
+
+shadowJar {
+	classifier = ''
+	exclude 'LICENSE.txt'
+	dependencies {
+		include(dependency("org.spongepowered:mixin:0.8"))
+	}
+}
+
+build.dependsOn(shadowJar)
+
+reobf {
+    shadowJar {}
 }
 
 processResources {

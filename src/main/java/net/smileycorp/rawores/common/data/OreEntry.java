@@ -1,4 +1,4 @@
-package net.smileycorp.rawores.common;
+package net.smileycorp.rawores.common.data;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;

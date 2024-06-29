@@ -1,0 +1,10 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "net.smileycorp.rawores.mixin",
+  "refmap": "mixins.raw_ores.refmap.json",
+  "mixins": [
+	"MixinBlock"
+  ],
+  "client": [],
+  "server": []
+}

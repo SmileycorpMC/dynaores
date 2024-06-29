@@ -1,8 +1,10 @@
-package net.smileycorp.rawores.common;
+package net.smileycorp.rawores.common.data;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
+import net.smileycorp.rawores.common.Constants;
+import net.smileycorp.rawores.common.RawOres;
 
 public class ItemRawOre extends Item {
     

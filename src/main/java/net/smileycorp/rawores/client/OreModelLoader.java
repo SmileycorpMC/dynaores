@@ -14,7 +14,11 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
-import net.smileycorp.rawores.common.*;
+import net.smileycorp.rawores.common.Constants;
+import net.smileycorp.rawores.common.RawOres;
+import net.smileycorp.rawores.common.data.ItemRawOre;
+import net.smileycorp.rawores.common.data.OreEntry;
+import net.smileycorp.rawores.common.data.OreHandler;
 
 import java.awt.*;
 import java.util.List;
