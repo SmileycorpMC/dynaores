@@ -26,7 +26,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
-version = "1.12.2-1.0.0-dev"
+version = "1.12.2-beta-0.3.0"
 group = "net.smileycorp.rawores"
 archivesBaseName = "zRaw-Ores"
 
