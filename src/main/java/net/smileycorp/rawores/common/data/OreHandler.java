@@ -5,6 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+import net.smileycorp.rawores.common.ConfigHandler;
 import net.smileycorp.rawores.common.RawOres;
 
 import java.util.Collection;
@@ -24,7 +25,7 @@ public class OreHandler {
             if (!ore.contains("ore")) continue;
             String name = ore.replace("ore", "");
             //make sure we don't accidentally register an entry twice (somehow)
-            if (entries.containsKey(name)) continue;
+            if (entries.containsKey(name) || ConfigHandler.isBlacklisted(name)) continue;
             List<ItemStack> ores = OreDictionary.getOres(ore);
             //check that one of the ores is a block, so we don't add raw items for things like knightmetal
             if (!hasBlock(ores)) continue;

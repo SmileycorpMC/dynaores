@@ -20,6 +20,7 @@ import java.util.Random;
 public class CommonProxy {
     
     public void preInit(FMLPreInitializationEvent event) {
+        ConfigHandler.syncConfig(event);
         MinecraftForge.EVENT_BUS.register(this);
     }
     
@@ -73,6 +74,7 @@ public class CommonProxy {
     
     //ore drop formula copied from diamond ore, it's the same formula used by the ore_drops loot function in modern versions
     private static int getFortune(int fortune, int base, Random rand) {
+        if (!ConfigHandler.canFortune) return base;
         int drops = (Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base;
         return drops;
     }
