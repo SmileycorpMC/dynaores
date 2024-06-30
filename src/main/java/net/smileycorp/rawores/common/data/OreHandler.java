@@ -33,7 +33,7 @@ public class OreHandler {
             if (!OreDictionary.doesOreNameExist(ingot)) continue;
             List<ItemStack> ingots = OreDictionary.getOres(ingot);
             if (ingots.isEmpty()) continue;
-            OreEntry entry = new OreEntry(name, ores.get(0).getUnlocalizedName().replace(".name", "") + ".name", ingots.get(0));
+            OreEntry entry = new GeneratedOreEntry(name, ores.get(0), ingots.get(0));
             entries.put(name, entry);
         }
         RawOres.logInfo("Detected ore types " + entries.keySet());

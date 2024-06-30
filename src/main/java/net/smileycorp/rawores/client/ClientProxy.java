@@ -37,8 +37,6 @@ public class ClientProxy extends CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
         Minecraft mc = Minecraft.getMinecraft();
-        //calculate the tint colours for each registered ore
-        OreModelLoader.INSTANCE.mapColours();
         //register ore models
         RawOres.logInfo("Registering models");
         ModelLoaderRegistry.registerLoader(OreModelLoader.INSTANCE);

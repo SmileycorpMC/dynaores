@@ -19,15 +19,12 @@ public class ConfigHandler {
     
     private static String[] ignoredWords = {
             "Endstone",
-            "Netherrack",
-            "End",
-            "Nether"
+            "Netherrack"
     };
     
     private static String[] otherNames = {
             "Aluminium-Aluminum",
             "Mythril-Mithril"
-            
     };
     
     private static String[] forceGenerate = {};

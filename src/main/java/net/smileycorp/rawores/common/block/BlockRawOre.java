@@ -1,9 +1,10 @@
-package net.smileycorp.rawores.common.data;
+package net.smileycorp.rawores.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.smileycorp.rawores.common.Constants;
 import net.smileycorp.rawores.common.RawOres;
+import net.smileycorp.rawores.common.data.OreEntry;
 
 public class BlockRawOre extends Block {
     

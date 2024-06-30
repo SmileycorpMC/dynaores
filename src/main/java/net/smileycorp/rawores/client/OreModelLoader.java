@@ -20,7 +20,11 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.smileycorp.rawores.common.Constants;
 import net.smileycorp.rawores.common.RawOres;
-import net.smileycorp.rawores.common.data.*;
+import net.smileycorp.rawores.common.block.BlockRawOre;
+import net.smileycorp.rawores.common.data.OreEntry;
+import net.smileycorp.rawores.common.data.OreHandler;
+import net.smileycorp.rawores.common.item.IOreItem;
+import net.smileycorp.rawores.common.item.ItemBlockRawOre;
 
 import java.awt.*;
 import java.util.List;
@@ -36,16 +40,8 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     protected final List<String> blockTextures = Lists.newArrayList();
     private final OreModelOverrides overrides = new OreModelOverrides();
     
-    public void mapColours() {
-        colours.clear();
-        for (OreEntry entry : OreHandler.INSTANCE.getOres()) colours.put(entry.getName().toLowerCase(Locale.US), getColourFor(entry));
-    }
-    
     //find an appropriate colour to tint ores if no texture is provided
-    private int getColourFor(OreEntry entry) {
-        ItemStack ingot = entry.getIngot();
-        //check to see if we forcibly generated the ore
-        if (ingot.isEmpty()) return entry.getColour();
+    public int getColourFor(ItemStack ingot, String name) {
         try {
             //get the texture for the corresponding ingot item
             TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ingot, null, null)
@@ -60,10 +56,10 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 b += colour & 0xFF;
             }
             int c = 0xFF000000 + new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), (int) 255).getRGB();
-            RawOres.logInfo("Loaded colour " + c + " for " + entry.getName());
+            RawOres.logInfo("Loaded colour " + c + " for " + name);
             return c;
         } catch (Exception e) {
-            RawOres.logError("Error getting colour for " + entry.getName(), e);
+            RawOres.logError("Error getting colour for " + name, e);
             return 0xFFFFFFFF;
         }
     }
@@ -98,7 +94,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     
     @Override
     public void onResourceManagerReload(IResourceManager manager) {
-        mapColours();
+        for (OreEntry entry : OreHandler.INSTANCE.getOres()) entry.refresh();
     }
     
     @Override

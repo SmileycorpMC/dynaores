@@ -1,10 +1,11 @@
-package net.smileycorp.rawores.common.data;
+package net.smileycorp.rawores.common.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.smileycorp.rawores.common.Constants;
 import net.smileycorp.rawores.common.RawOres;
+import net.smileycorp.rawores.common.data.OreEntry;
 
 public class ItemRawOre extends Item implements IOreItem {
     
@@ -21,7 +22,7 @@ public class ItemRawOre extends Item implements IOreItem {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return I18n.translateToLocalFormatted("items.raw_ores.RawOre.name",
-                I18n.translateToLocal(entry.getUnlocalizedName()).replace("Ore", "").trim()).trim();
+                I18n.translateToLocal(entry.getLocalizedName()).replace("Ore", "").trim()).trim();
     }
     
     @Override
