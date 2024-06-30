@@ -27,7 +27,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 
 version = "1.12.2-beta-0.7.0"
-group = "net.smileycorp.rawores"
+group = "net.smileycorp.dynaores"
 archivesBaseName = "zDynamic-Raw-Ores"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -35,7 +35,7 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
     
-    accessTransformer = file('src/main/resources/META-INF/raw_ores_at.cfg')
+    accessTransformer = file('src/main/resources/META-INF/dynaores_at.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -62,7 +62,7 @@ minecraft {
 }
 
 mixin {
-    add sourceSets.main, "mixins.raw_ores.refmap.json"
+    add sourceSets.main, "mixins.dynaores.refmap.json"
 }
 
 repositories {
@@ -86,7 +86,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "raw_ores",
+            "Specification-Title": "dynaores",
             "Specification-Vendor": "smileycorp",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
@@ -94,10 +94,10 @@ jar {
             "Implementation-Vendor" :"smileycorp",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
 			"ForceLoadAsMod": true,
-			"FMLAT": "raw_ores_at.cfg",
+			"FMLAT": "dynaores_at.cfg",
 			"FMLCorePluginContainsFMLMod": true,
 			"TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-			"MixinConfigs": "mixins.raw_ores.json"
+			"MixinConfigs": "mixins.dynaores.json"
         ])
         
     }

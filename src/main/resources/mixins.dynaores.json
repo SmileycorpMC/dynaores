@@ -1,0 +1,10 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "net.smileycorp.dynaores.mixin",
+  "refmap": "mixins.dynaores.refmap.json",
+  "mixins": [
+	"MixinBlock"
+  ],
+  "client": [],
+  "server": []
+}
