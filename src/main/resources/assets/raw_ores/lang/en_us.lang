@@ -1,2 +1,3 @@
 items.raw_ores.RawOre.name=Raw %1$s
+items.raw_ores.RawOreBlock.name=Block of Raw %1$s
 itemGroup.raw_ores.tab=Raw Ores

@@ -48,7 +48,7 @@ public class CommonProxy {
             String ore = getOre(stack);
             if (ore == null) return;
             //get the registered ore entry corresponding to the block we just broke
-            OreEntry entry = OreHandler.INSTANCE.getEntry(ore.replace("ore", ""));
+            OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
             if (entry == null) return;
             for (int i = 0; i < drops.size(); i++) {
                 ItemStack drop = drops.get(i);

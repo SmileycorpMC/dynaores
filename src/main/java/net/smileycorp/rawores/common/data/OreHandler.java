@@ -3,7 +3,6 @@ package net.smileycorp.rawores.common.data;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.rawores.common.ConfigHandler;
 import net.smileycorp.rawores.common.RawOres;
@@ -23,7 +22,7 @@ public class OreHandler {
         //find all ore dictionary entries that match the pattern ore*****
         for (String ore : OreDictionary.getOreNames()) {
             if (!ore.contains("ore")) continue;
-            String name = ore.replace("ore", "");
+            String name = format(ore);
             //make sure we don't accidentally register an entry twice (somehow)
             if (entries.containsKey(name) || ConfigHandler.isBlacklisted(name)) continue;
             List<ItemStack> ores = OreDictionary.getOres(ore);
@@ -34,11 +33,8 @@ public class OreHandler {
             if (!OreDictionary.doesOreNameExist(ingot)) continue;
             List<ItemStack> ingots = OreDictionary.getOres(ingot);
             if (ingots.isEmpty()) continue;
-            OreEntry entry = new OreEntry(name, ores, ingots.get(0));
+            OreEntry entry = new OreEntry(name, ores.get(0).getUnlocalizedName() + ".name", ingots.get(0));
             entries.put(name, entry);
-            //registering in post init is usually a bad idea, but we have to do all our registering after other mods have loaded
-            ForgeRegistries.ITEMS.register(entry.getItem());
-            OreDictionary.registerOre(ore, new ItemStack(entry.getItem()));
         }
         RawOres.logInfo("Detected ore types " + entries.keySet());
     }
@@ -53,13 +49,12 @@ public class OreHandler {
         return entries.values();
     }
     
-    public OreEntry getEntry(ItemStack stack) {
-        for (OreEntry entry : entries.values()) if (entry.contains(stack)) return entry;
-        return null;
+    public OreEntry getEntry(String ore) {
+        return entries.get(format(ore));
     }
     
-    public OreEntry getEntry(String ore) {
-        return entries.get(ore);
+    private String format(String ore) {
+        return ConfigHandler.format(ore.replace("ore", ""));
     }
     
     public Collection<String> getOreNames() {

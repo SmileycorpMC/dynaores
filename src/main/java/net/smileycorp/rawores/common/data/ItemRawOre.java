@@ -6,7 +6,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.smileycorp.rawores.common.Constants;
 import net.smileycorp.rawores.common.RawOres;
 
-public class ItemRawOre extends Item {
+public class ItemRawOre extends Item implements IOreItem {
     
     private final OreEntry entry;
     
@@ -20,9 +20,11 @@ public class ItemRawOre extends Item {
     
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocalFormatted("items.raw_ores.RawOre.name", entry.getOres().get(0).getDisplayName().replace("Ore", "").trim()).trim();
+        return I18n.translateToLocalFormatted("items.raw_ores.RawOre.name",
+                I18n.translateToLocal(entry.getUnlocalizedName()).replace("Ore", "").trim()).trim();
     }
     
+    @Override
     public OreEntry getEntry() {
         return entry;
     }
