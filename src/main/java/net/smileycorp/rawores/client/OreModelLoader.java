@@ -20,10 +20,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.smileycorp.rawores.common.Constants;
 import net.smileycorp.rawores.common.RawOres;
-import net.smileycorp.rawores.common.data.BlockRawOre;
-import net.smileycorp.rawores.common.data.IOreItem;
-import net.smileycorp.rawores.common.data.OreEntry;
-import net.smileycorp.rawores.common.data.OreHandler;
+import net.smileycorp.rawores.common.data.*;
 
 import java.awt.*;
 import java.util.List;
@@ -122,8 +119,8 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 name = block ? "blocks/fallback" : "items/fallback";
             }
             RawOres.logInfo("Loading model for " + location);
-            return block ? ModelLoaderRegistry.getModel(new ResourceLocation("block/stone"))
-                    .retexture(ImmutableMap.of("all", Constants.locStr(name), "particle", Constants.locStr(name))) :
+            return block ? ModelLoaderRegistry.getModel(Constants.loc("block/raw_ore_block"))
+                    .retexture(ImmutableMap.of("all", Constants.locStr(name))) :
                     new ItemLayerModel(ImmutableList.of(Constants.loc(name)), overrides);
         } catch (Exception e) {
             RawOres.logError("Failed loading model " + location, e);
@@ -133,12 +130,12 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     
     public int getColour(ItemStack stack, int index) {
         String name = ((IOreItem)stack.getItem()).getEntry().getName().toLowerCase(Locale.US);
-        return !(itemTextures.contains(name)) && colours.containsKey(name) ? colours.get(name) : 0xFFFFFFFF;
+        return !((stack.getItem() instanceof ItemBlockRawOre ? blockTextures : itemTextures).contains(name)) && colours.containsKey(name) ? colours.get(name) : 0xFFFFFFFF;
     }
     
     public int getColour(IBlockState state, IBlockAccess world, BlockPos pos, int index) {
         String name = ((BlockRawOre)state.getBlock()).getEntry().getName().toLowerCase(Locale.US);
-        return !(itemTextures.contains(name)) && colours.containsKey(name) ? colours.get(name) : 0xFFFFFFFF;
+        return !(blockTextures.contains(name)) && colours.containsKey(name) ? colours.get(name) : 0xFFFFFFFF;
     }
     
 }

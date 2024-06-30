@@ -13,7 +13,7 @@ public class StateMapperOreBlock extends StateMapperBase {
     }
     
     @Override
-    protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+    protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
         return loc;
     }
     

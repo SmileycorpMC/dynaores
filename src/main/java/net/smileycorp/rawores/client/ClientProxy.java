@@ -1,10 +1,8 @@
 package net.smileycorp.rawores.client;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -52,7 +50,9 @@ public class ClientProxy extends CommonProxy {
             mesher.register(entry.getItem(), 0, itemLoc);
             ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.locStr(entry.getName() + "_block.raw_ore"));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(entry.getBlock()), 0, blockLoc);
-            ModelLoader.setCustomStateMapper(entry.getBlock(), new StateMapperOreBlock(blockLoc));
+            StateMapperOreBlock mapper = new StateMapperOreBlock(blockLoc);
+            ModelLoader.setCustomStateMapper(entry.getBlock(), mapper);
+            mc.getBlockRendererDispatcher().getBlockModelShapes().registerBlockWithStateMapper(entry.getBlock(), mapper);
             //have to manually copy entries to the model mesher because we register our model definitions too late for the game to automatically do it
             mesher.register(Item.getItemFromBlock(entry.getBlock()), 0, blockLoc);
         }

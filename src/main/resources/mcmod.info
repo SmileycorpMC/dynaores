@@ -1,7 +1,7 @@
 [
 {
   "modid": "raw_ores",
-  "name": "Raw Ores",
+  "name": "Dynamic Raw Ores",
   "description": "",
   "version": "1.0.0",
   "mcversion": "${mcversion}",
