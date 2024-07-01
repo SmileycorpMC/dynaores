@@ -12,6 +12,7 @@ import net.smileycorp.dynaores.common.block.BlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemBlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemRawOre;
 import net.smileycorp.dynaores.integration.MekanismIntegration;
+import net.smileycorp.dynaores.integration.NuclearcraftIntegration;
 
 public abstract class OreEntry {
     
@@ -35,6 +36,7 @@ public abstract class OreEntry {
         GameRegistry.addShapedRecipe(Constants.loc("raw" + name + "block"), Constants.loc("raw_ore_block"), new ItemStack(block),
                "###", "###", "###", '#', Ingredient.fromItem(item));
         if (Loader.isModLoaded("mekanism")) MekanismIntegration.registerRecipes(item, name);
+        if (Loader.isModLoaded("nuclearcraft")) NuclearcraftIntegration.registerRecipes(item, name);
     }
     
     public String getName() {

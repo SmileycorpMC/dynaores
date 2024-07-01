@@ -24,7 +24,13 @@ public class ConfigHandler {
     
     private static String[] otherNames = {
             "Aluminium-Aluminum",
-            "Mythril-Mithril"
+            "Mythril-Mithril",
+            "Adamantite-Adamantium",
+            "Adamantine-Adamantium",
+            "Wolfram-Tungsten",
+            "Chromium-Chrome",
+            "Bauxite-Aluminum",
+            "Mercury-Quicksilver"
     };
     
     private static String[] forceGenerate = {};
