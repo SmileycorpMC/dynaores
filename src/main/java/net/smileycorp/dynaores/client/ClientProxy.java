@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.smileycorp.dynaores.common.CommonProxy;
 import net.smileycorp.dynaores.common.Constants;
-import net.smileycorp.dynaores.common.RawOres;
+import net.smileycorp.dynaores.common.DynaOres;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
 
@@ -38,7 +38,7 @@ public class ClientProxy extends CommonProxy {
         super.postInit(event);
         Minecraft mc = Minecraft.getMinecraft();
         //register ore models
-        RawOres.logInfo("Registering models");
+        DynaOres.logInfo("Registering models");
         ModelLoaderRegistry.registerLoader(OreModelLoader.INSTANCE);
         ItemModelMesher mesher = mc.getRenderItem().getItemModelMesher();
         for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
@@ -67,7 +67,7 @@ public class ClientProxy extends CommonProxy {
     
     @SubscribeEvent(priority = EventPriority.LOW)
     public void stitchTextureEvent(TextureStitchEvent.Pre event) {
-        RawOres.logInfo("Stitching Textures");
+        DynaOres.logInfo("Stitching Textures");
         OreModelLoader.INSTANCE.stitchTextures(event.getMap());
     }
     

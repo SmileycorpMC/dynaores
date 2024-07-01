@@ -9,14 +9,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class RawOresTab extends CreativeTabs {
+public class DynaOresTab extends CreativeTabs {
     
     private final Random rand = new Random();
     private ItemStack stack;
     private NonNullList<ItemStack> items;
     private boolean needsRefresh = true;
     
-    public RawOresTab() {
+    public DynaOresTab() {
         super(Constants.name("tab"));
     }
     

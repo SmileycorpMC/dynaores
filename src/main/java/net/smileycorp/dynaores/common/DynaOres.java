@@ -10,14 +10,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
-public class RawOres {
+public class DynaOres {
     
     private static Logger logger;
     
-    public static final CreativeTabs CREATIVE_TAB = new RawOresTab();
+    public static final CreativeTabs CREATIVE_TAB = new DynaOresTab();
 
     @Mod.Instance(Constants.MODID)
-    public static RawOres INSTANCE;
+    public static DynaOres INSTANCE;
     
     @SidedProxy(clientSide = Constants.CLIENT_PROXY, serverSide = Constants.SERVER_PROXY)
     public static CommonProxy PROXY;

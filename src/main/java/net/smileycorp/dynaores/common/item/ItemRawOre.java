@@ -4,7 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import net.smileycorp.dynaores.common.Constants;
-import net.smileycorp.dynaores.common.RawOres;
+import net.smileycorp.dynaores.common.DynaOres;
 import net.smileycorp.dynaores.common.data.OreEntry;
 
 public class ItemRawOre extends Item implements IOreItem {
@@ -16,7 +16,7 @@ public class ItemRawOre extends Item implements IOreItem {
         String name = "Raw" + entry.getName();
         setRegistryName(Constants.loc(name));
         setUnlocalizedName(Constants.name(name));
-        setCreativeTab(RawOres.CREATIVE_TAB);
+        setCreativeTab(DynaOres.CREATIVE_TAB);
     }
     
     @Override

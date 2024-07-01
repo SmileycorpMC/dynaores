@@ -3,7 +3,7 @@ package net.smileycorp.dynaores.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.smileycorp.dynaores.common.Constants;
-import net.smileycorp.dynaores.common.RawOres;
+import net.smileycorp.dynaores.common.DynaOres;
 import net.smileycorp.dynaores.common.data.OreEntry;
 
 public class BlockRawOre extends Block {
@@ -18,7 +18,7 @@ public class BlockRawOre extends Block {
         String name = "Raw" + entry.getName() + "Block";
         setRegistryName(Constants.loc(name));
         setUnlocalizedName(Constants.name(name));
-        setCreativeTab(RawOres.CREATIVE_TAB);
+        setCreativeTab(DynaOres.CREATIVE_TAB);
     }
     
     public OreEntry getEntry() {

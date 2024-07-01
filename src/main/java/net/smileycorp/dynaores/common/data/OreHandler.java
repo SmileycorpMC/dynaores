@@ -5,7 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.ConfigHandler;
-import net.smileycorp.dynaores.common.RawOres;
+import net.smileycorp.dynaores.common.DynaOres;
 
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +36,7 @@ public class OreHandler {
             OreEntry entry = new GeneratedOreEntry(name, ores.get(0), ingots.get(0));
             entries.put(name, entry);
         }
-        RawOres.logInfo("Detected ore types " + entries.keySet());
+        DynaOres.logInfo("Detected ore types " + entries.keySet());
     }
     
     //check if the registered ores contain a block to prevent creating unnecessary raw items

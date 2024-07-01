@@ -18,7 +18,7 @@ import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.smileycorp.dynaores.common.Constants;
-import net.smileycorp.dynaores.common.RawOres;
+import net.smileycorp.dynaores.common.DynaOres;
 import net.smileycorp.dynaores.common.block.BlockRawOre;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
@@ -53,10 +53,10 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 b += colour & 0xFF;
             }
             int c = 0xFF000000 + new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), (int) 255).getRGB();
-            RawOres.logInfo("Loaded colour " + c + " for " + name);
+            DynaOres.logInfo("Loaded colour " + c + " for " + name);
             return c;
         } catch (Exception e) {
-            RawOres.logError("Error getting colour for " + name, e);
+            DynaOres.logError("Error getting colour for " + name, e);
             return 0xFFFFFFFF;
         }
     }
@@ -75,7 +75,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 //register the texture
                 map.registerSprite(Constants.loc("items/" + name));
                 itemTextures.add(name);
-                RawOres.logInfo("Registered texture for " + name);
+                DynaOres.logInfo("Registered texture for " + name);
             } catch (Exception e) {}
             //register block textures
             map.registerSprite(Constants.loc("items/fallback"));
@@ -84,7 +84,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 //register the texture
                 map.registerSprite(Constants.loc("blocks/" + name));
                 blockTextures.add(name);
-                RawOres.logInfo("Registered texture for " + name);
+                DynaOres.logInfo("Registered texture for " + name);
             } catch (Exception e) {}
         }
     }
@@ -111,12 +111,12 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
             } catch (Exception e) {
                 name = block ? "blocks/fallback" : "items/fallback";
             }
-            RawOres.logInfo("Loading model for " + location);
+            DynaOres.logInfo("Loading model for " + location);
             return block ? ModelLoaderRegistry.getModel(Constants.loc("block/raw_ore_block"))
                     .retexture(ImmutableMap.of("all", Constants.locStr(name))) :
                     new ItemLayerModel(ImmutableList.of(Constants.loc(name)), overrides);
         } catch (Exception e) {
-            RawOres.logError("Failed loading model " + location, e);
+            DynaOres.logError("Failed loading model " + location, e);
             return ModelLoaderRegistry.getMissingModel();
         }
     }
