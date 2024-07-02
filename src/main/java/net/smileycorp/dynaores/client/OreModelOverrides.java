@@ -34,8 +34,7 @@ public class OreModelOverrides extends ItemOverrideList {
         return builder.build();
     }
     
-    private static final TRSRTransformation flipX = new TRSRTransformation(null, null, new Vector3f(-1, 1, 1),
-            null);
+    private static final TRSRTransformation flipX = new TRSRTransformation(null, null, new Vector3f(-1, 1, 1), null);
     
     private static TRSRTransformation leftify(TRSRTransformation transform) {
         return TRSRTransformation.blockCenterToCorner(

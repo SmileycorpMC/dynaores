@@ -3,7 +3,6 @@ package net.smileycorp.dynaores.common.data;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -11,8 +10,6 @@ import net.smileycorp.dynaores.common.Constants;
 import net.smileycorp.dynaores.common.block.BlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemBlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemRawOre;
-import net.smileycorp.dynaores.integration.MekanismIntegration;
-import net.smileycorp.dynaores.integration.NuclearcraftIntegration;
 
 public abstract class OreEntry {
     
@@ -35,8 +32,6 @@ public abstract class OreEntry {
         GameRegistry.addShapelessRecipe(Constants.loc("raw" + name), Constants.loc("raw_ore"), new ItemStack(item, 9), Ingredient.fromStacks(new ItemStack(block)));
         GameRegistry.addShapedRecipe(Constants.loc("raw" + name + "block"), Constants.loc("raw_ore_block"), new ItemStack(block),
                "###", "###", "###", '#', Ingredient.fromItem(item));
-        if (Loader.isModLoaded("mekanism")) MekanismIntegration.registerRecipes(item, name);
-        if (Loader.isModLoaded("nuclearcraft")) NuclearcraftIntegration.registerRecipes(item, name);
     }
     
     public String getName() {

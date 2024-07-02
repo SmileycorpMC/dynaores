@@ -1,13 +1,15 @@
 package net.smileycorp.dynaores.common;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,20 +26,26 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(this);
     }
     
-    public void init(FMLInitializationEvent event) {}
-    
     public void postInit(FMLPostInitializationEvent event) {
-        //we do everything in post init so we can check everything other mods have registered
-        OreHandler.INSTANCE.buildOreProperties();
+        DynaOres.logInfo("Detected ores " + OreHandler.INSTANCE.getOreNames());
     }
     
-    public void serverStart(FMLServerStartingEvent event) {}
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        OreHandler.INSTANCE.tryRegister("oreIron", new ItemStack(Blocks.IRON_ORE));
+        OreHandler.INSTANCE.tryRegister("oreGold", new ItemStack(Blocks.GOLD_ORE));
+    }
     
     //high priority so hopefully fortune will stack with other modifiers, use this as a backup in case mods override Block#getDrops
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void dropItem(BlockEvent.HarvestDropsEvent event) {
         if (event.isSilkTouching()) return;
         handleDrops(event.getState(),  event.getDrops(), event.getFortuneLevel(), new Random());
+    }
+    
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void dropItem(OreDictionary.OreRegisterEvent event) {
+        OreHandler.INSTANCE.tryRegister(event.getName(), event.getOre());
     }
     
     public static void handleDrops(IBlockState state, List<ItemStack> drops, int fortune, Random rand) {

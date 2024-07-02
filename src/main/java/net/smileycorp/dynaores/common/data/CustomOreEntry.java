@@ -15,7 +15,9 @@ public class CustomOreEntry extends OreEntry {
     
     @Override
     public String getLocalizedName() {
-        return I18n.translateToLocal("material.raw_ores." + name.toLowerCase(Locale.US));
+        String key = "material.raw_ores." + name.toLowerCase(Locale.US);
+        //check if translation key exists, if not format the oredict name
+        return I18n.canTranslate(key) ? I18n.translateToLocal(key) : name.replaceAll("(.)([A-Z])", "$1 $2");
     }
     
     @Override

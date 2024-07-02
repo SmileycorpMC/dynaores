@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
@@ -29,18 +28,8 @@ public class DynaOres {
     }
     
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event){
-        PROXY.init(event);
-    }
-    
-    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
         PROXY.postInit(event);
-    }
-    
-    @Mod.EventHandler
-    public void serverStart(FMLServerStartingEvent event){
-        PROXY.serverStart(event);
     }
     
     public static void logInfo(Object message) {

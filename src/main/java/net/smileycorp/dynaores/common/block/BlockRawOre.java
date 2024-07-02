@@ -13,7 +13,7 @@ public class BlockRawOre extends Block {
     public BlockRawOre(OreEntry entry) {
         super(Material.ROCK);
         this.entry = entry;
-        setHardness(6);
+        setHardness(5);
         setResistance(6);
         String name = "Raw" + entry.getName() + "Block";
         setRegistryName(Constants.loc(name));

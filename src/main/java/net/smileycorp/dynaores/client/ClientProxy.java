@@ -10,9 +10,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.resource.VanillaResourceType;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.smileycorp.dynaores.common.CommonProxy;
@@ -22,16 +20,6 @@ import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
 
 public class ClientProxy extends CommonProxy {
-    
-    @Override
-    public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-    }
-    
-    @Override
-    public void init(FMLInitializationEvent event) {
-        super.init(event);
-    }
     
     @Override
     public void postInit(FMLPostInitializationEvent event) {

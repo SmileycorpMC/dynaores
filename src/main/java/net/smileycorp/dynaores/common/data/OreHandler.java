@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.ConfigHandler;
 import net.smileycorp.dynaores.common.DynaOres;
+import net.smileycorp.dynaores.common.item.IOreItem;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,27 +17,37 @@ public class OreHandler {
     public static final OreHandler INSTANCE = new OreHandler();
     
     private final Map<String, OreEntry> entries = Maps.newHashMap();
+    private final Map<String, OreEntry> dupeEntries = Maps.newHashMap();
     
-    //generate all ore entries used by the mod
-    public void buildOreProperties() {
-        //find all ore dictionary entries that match the pattern ore*****
-        for (String ore : OreDictionary.getOreNames()) {
-            if (!ore.contains("ore")) continue;
-            String name = format(ore);
-            //make sure we don't accidentally register an entry twice (somehow)
-            if (entries.containsKey(name) || ConfigHandler.isBlacklisted(name)) continue;
-            List<ItemStack> ores = OreDictionary.getOres(ore);
-            //check that one of the ores is a block, so we don't add raw items for things like knightmetal
-            if (!hasBlock(ores)) continue;
-            //check if there is a corresponding ingot***** to filter out nonmetals like gems and dusts
-            String ingot = ore.replace("ore", "ingot");
-            if (!OreDictionary.doesOreNameExist(ingot)) continue;
-            List<ItemStack> ingots = OreDictionary.getOres(ingot);
-            if (ingots.isEmpty()) continue;
-            OreEntry entry = new GeneratedOreEntry(name, ores.get(0), ingots.get(0));
-            entries.put(name, entry);
+    //try to register the given oredictionary
+    public void tryRegister(String ore, ItemStack stack) {
+        //registering our own items causes recursion here, cancel it preemptively before we start doing anything else
+        //also we don't want duplicate variants
+        if (stack.getItem() instanceof IOreItem) return;
+        //is it an ore we are registering
+        if (!ore.contains("ore")) return;
+        String s = ore.replace("ore", "");
+        //make sure we don't accidentally register an entry twice
+        if (dupeEntries.containsKey(s)) return;
+        String name = format(ore);
+        if (entries.containsKey(name)) {
+            dupeEntries.put(s, entries.get(name));
+            return;
         }
-        DynaOres.logInfo("Detected ore types " + entries.keySet());
+        if (ConfigHandler.isBlacklisted(name)) return;
+        List<ItemStack> ores = OreDictionary.getOres(ore);
+        //check that one of the ores is a block, so we don't add raw items for things like knightmetal
+        if (!hasBlock(ores)) return;
+        //check if there is a corresponding ingot***** to filter out nonmetals like gems and dusts
+        String ingot = ore.replace("ore", "ingot");
+        if (!OreDictionary.doesOreNameExist(ingot)) return;
+        List<ItemStack> ingots = OreDictionary.getOres(ingot);
+        if (ingots.isEmpty()) return;
+        OreEntry entry = new GeneratedOreEntry(name, stack, ingots.get(0));
+        entries.put(name, entry);
+        //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
+        if (!s.equals(name)) dupeEntries.put(s, entry);
+        DynaOres.logInfo("Registered ore " + name);
     }
     
     //check if the registered ores contain a block to prevent creating unnecessary raw items
@@ -50,7 +61,8 @@ public class OreHandler {
     }
     
     public OreEntry getEntry(String ore) {
-        return entries.get(format(ore));
+        ore = ore.replace("ore", "");
+        return dupeEntries.containsKey(ore) ? dupeEntries.get(ore) : entries.get(ore);
     }
     
     private String format(String ore) {
