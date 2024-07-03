@@ -6,19 +6,18 @@ import net.smileycorp.dynaores.client.OreModelLoader;
 
 public class GeneratedOreEntry extends OreEntry {
     
-    private final ItemStack ore, ingot;
+    private final ItemStack ingot;
     private int colour = 0;
     
-    public GeneratedOreEntry(String name, ItemStack ore, ItemStack ingot) {
+    public GeneratedOreEntry(String name, ItemStack ingot) {
         super(name);
-        this.ore = ore;
         this.ingot = ingot;
         GameRegistry.addSmelting(item, ingot, 0.5f);
     }
     
     @Override
     public String getLocalizedName() {
-        return ore.getDisplayName();
+        return ingot.getDisplayName();
     }
     
     @Override

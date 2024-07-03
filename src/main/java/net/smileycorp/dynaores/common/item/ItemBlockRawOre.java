@@ -19,7 +19,7 @@ public class ItemBlockRawOre extends ItemBlock implements IOreItem {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return I18n.translateToLocalFormatted("items.dynaores.RawOreBlock.name",
-                I18n.translateToLocal(entry.getLocalizedName()).replace("Ore", "").trim()).trim();
+                I18n.translateToLocal(entry.getLocalizedName()).replace("Ingot", "").trim()).trim();
     }
     
     @Override

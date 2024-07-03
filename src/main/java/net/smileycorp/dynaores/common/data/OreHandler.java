@@ -25,25 +25,29 @@ public class OreHandler {
         //also we don't want duplicate variants
         if (stack.getItem() instanceof IOreItem) return;
         //is it an ore we are registering
-        if (!ore.contains("ore")) return;
-        String s = ore.replace("ore", "");
+        if (!ore.contains("ore") &! ore.contains("ingot")) return;
+        boolean ingot = ore.contains("ingot");
+        String s = ore.replace(ingot ? "ingot" : "ore", "");
         //make sure we don't accidentally register an entry twice
         if (dupeEntries.containsKey(s)) return;
-        String name = format(ore);
+        String name = format(s);
         if (entries.containsKey(name)) {
             dupeEntries.put(s, entries.get(name));
             return;
         }
         if (ConfigHandler.isBlacklisted(name)) return;
-        List<ItemStack> ores = OreDictionary.getOres(ore);
+        List<ItemStack> ores = OreDictionary.getOres(ingot ? ore.replace("ingot", "ore") : ore);
         //check that one of the ores is a block, so we don't add raw items for things like knightmetal
         if (!hasBlock(ores)) return;
         //check if there is a corresponding ingot***** to filter out nonmetals like gems and dusts
-        String ingot = ore.replace("ore", "ingot");
-        if (!OreDictionary.doesOreNameExist(ingot)) return;
-        List<ItemStack> ingots = OreDictionary.getOres(ingot);
-        if (ingots.isEmpty()) return;
-        OreEntry entry = new GeneratedOreEntry(name, stack, ingots.get(0));
+        List<ItemStack> ingots = null;
+        if (!ingot) {
+            String ingotName = ore.replace("ore", "ingot");
+            if (!OreDictionary.doesOreNameExist(ingotName)) return;
+            ingots = OreDictionary.getOres(ingotName);
+            if (ingots.isEmpty()) return;
+        }
+        OreEntry entry = new GeneratedOreEntry(name, ingot ? stack : ingots.get(0));
         entries.put(name, entry);
         //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
         if (!s.equals(name)) dupeEntries.put(s, entry);
