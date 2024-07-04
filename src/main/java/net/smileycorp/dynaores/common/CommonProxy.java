@@ -27,7 +27,7 @@ public class CommonProxy {
     }
     
     public void postInit(FMLPostInitializationEvent event) {
-        DynaOres.logInfo("Detected ores " + OreHandler.INSTANCE.getOreNames());
+        DynaOresLogger.logInfo("Detected ores " + OreHandler.INSTANCE.getOreNames());
     }
     
     @SubscribeEvent
@@ -69,12 +69,8 @@ public class CommonProxy {
         for (int id : OreDictionary.getOreIDs(stack)) {
             String ore = OreDictionary.getOreName(id);
             if (ore.contains("ore")) {
-                DynaOres.logInfo(ore);
                 OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
-                if (entry != null) {
-                    DynaOres.logInfo(entry.getName() + ", " + entry.getOre());
-                    return entry;
-                }
+                if (entry != null) return entry;
             }
         }
         return null;

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.ConfigHandler;
-import net.smileycorp.dynaores.common.DynaOres;
+import net.smileycorp.dynaores.common.DynaOresLogger;
 import net.smileycorp.dynaores.common.item.IOreItem;
 
 import java.util.Collection;
@@ -51,7 +51,7 @@ public class OreHandler {
         entries.put(name, entry);
         //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
         if (!s.equals(name)) dupeEntries.put(s, entry);
-        DynaOres.logInfo("Registered ore " + name);
+        DynaOresLogger.logInfo("Registered ore " + name);
     }
     
     //check if the registered ores contain a block to prevent creating unnecessary raw items
