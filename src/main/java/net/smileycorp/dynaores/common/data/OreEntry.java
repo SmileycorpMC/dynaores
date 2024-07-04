@@ -52,4 +52,8 @@ public abstract class OreEntry {
     
     public void refresh() {}
     
+    public String getOre() {
+       return "ore" + name;
+    }
+    
 }

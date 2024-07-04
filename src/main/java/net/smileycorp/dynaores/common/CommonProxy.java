@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -51,25 +52,30 @@ public class CommonProxy {
         //use try/catch here because blocks without items can't be oredicted and the game will crash if you try to make one
         try {
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
-            //get the first oredictionary that matches our pattern
-            String ore = getOre(stack);
-            if (ore == null) return;
             //get the registered ore entry corresponding to the block we just broke
-            OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
+            OreEntry entry =  getOre(stack);
             if (entry == null) return;
+            NonNullList<ItemStack> ores = OreDictionary.getOres(entry.getOre());
             for (int i = 0; i < drops.size(); i++) {
                 ItemStack drop = drops.get(i);
-                //check the drop is the same as the block we just broke so we don't modify extra or changed drops if other mods added them first
-                if (!ItemStack.areItemsEqual(stack, drop)) continue;
+                //check the drop is the same ore as the entry we just broke so we don't modify extra or changed drops if other mods added them first
+                if (!OreDictionary.containsMatch(false, ores, drop)) continue;
                 drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, rand)));
             }
         } catch (Exception e) {}
     }
     
-    private static String getOre(ItemStack stack) {
+    private static OreEntry getOre(ItemStack stack) {
         for (int id : OreDictionary.getOreIDs(stack)) {
             String ore = OreDictionary.getOreName(id);
-            if (ore.contains("ore")) return ore;
+            if (ore.contains("ore")) {
+                DynaOres.logInfo(ore);
+                OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
+                if (entry != null) {
+                    DynaOres.logInfo(entry.getName() + ", " + entry.getOre());
+                    return entry;
+                }
+            }
         }
         return null;
     }
