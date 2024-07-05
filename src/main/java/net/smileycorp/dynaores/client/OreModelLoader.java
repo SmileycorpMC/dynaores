@@ -38,8 +38,11 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     private final OreModelOverrides overrides = new OreModelOverrides();
     
     //find an appropriate colour to tint ores if no texture is provided
-    public int getColourFor(ItemStack ingot, String name) {
+    public int getColourFor(ItemStack ingot, OreEntry entry) {
         try {
+            String name = entry.getName().toLowerCase(Locale.US);
+            if (itemTextures.contains(name)) ingot = new ItemStack(entry.getItem());
+            else if (blockTextures.contains(name)) ingot = new ItemStack(entry.getBlock());
             //get the texture for the corresponding ingot item
             TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ingot, null, null)
                     .getQuads(null, null, 0).get(0).getSprite();
@@ -53,10 +56,10 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 b += colour & 0xFF;
             }
             int c = 0xFF000000 + new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), (int) 255).getRGB();
-            DynaOresLogger.logInfo("Loaded colour " + c + " for " + name);
+            DynaOresLogger.logInfo("Loaded colour " + c + " for " + entry);
             return c;
         } catch (Exception e) {
-            DynaOresLogger.logError("Error getting colour for " + name, e);
+            DynaOresLogger.logError("Error getting colour for " + entry, e);
             return 0xFFFFFFFF;
         }
     }

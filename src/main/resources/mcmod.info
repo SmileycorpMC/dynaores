@@ -3,7 +3,7 @@
   "modid": "dynaores",
   "name": "Dynamic Raw Ores",
   "description": "",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

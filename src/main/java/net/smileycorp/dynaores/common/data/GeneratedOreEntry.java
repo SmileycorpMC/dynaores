@@ -22,7 +22,7 @@ public class GeneratedOreEntry extends OreEntry {
     
     @Override
     public int getColour() {
-        if (colour == 0)  colour = OreModelLoader.INSTANCE.getColourFor(ingot, name);
+        if (colour == 0)  colour = OreModelLoader.INSTANCE.getColourFor(ingot, this);
         return colour;
     }
     

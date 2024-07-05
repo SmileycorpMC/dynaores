@@ -56,4 +56,9 @@ public abstract class OreEntry {
        return "ore" + name;
     }
     
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }

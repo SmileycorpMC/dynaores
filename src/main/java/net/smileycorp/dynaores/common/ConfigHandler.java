@@ -12,6 +12,7 @@ public class ConfigHandler {
     
     public static boolean canFortune = true;
     public static boolean invertBlacklist = true;
+    //public static boolean rawGems = true;
     
     private static String[] blacklist = {
             "AncientDebris"
