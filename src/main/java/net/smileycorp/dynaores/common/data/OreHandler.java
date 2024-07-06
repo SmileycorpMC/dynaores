@@ -25,9 +25,16 @@ public class OreHandler {
         //also we don't want duplicate variants
         if (stack.getItem() instanceof IOreItem) return;
         //is it an ore we are registering
-        if (!ore.contains("ore") &! ore.contains("ingot")) return;
-        boolean ingot = ore.contains("ingot");
-        String s = ore.replace(ingot ? "ingot" : "ore", "");
+        String type = "";
+        if (!ore.contains("ore")) {
+            for (String material : ConfigHandler.detectedMaterials) if (ore.contains(material)) {
+                type = material;
+                break;
+            }
+            if (type.isEmpty()) return;
+        }
+        boolean isMaterial = type.isEmpty();
+        String s = ore.replace(isMaterial ? type : "ore", "");
         //make sure we don't accidentally register an entry twice
         if (dupeEntries.containsKey(s)) return;
         String name = format(s);
@@ -36,18 +43,22 @@ public class OreHandler {
             return;
         }
         if (ConfigHandler.isBlacklisted(name)) return;
-        List<ItemStack> ores = OreDictionary.getOres(ingot ? ore.replace("ingot", "ore") : ore);
+        List<ItemStack> ores = OreDictionary.getOres(isMaterial ? ore.replace(type, "ore") : ore);
         //check that one of the ores is a block, so we don't add raw items for things like knightmetal
         if (!hasBlock(ores)) return;
         //check if there is a corresponding ingot***** to filter out nonmetals like gems and dusts
-        List<ItemStack> ingots = null;
-        if (!ingot) {
-            String ingotName = ore.replace("ore", "ingot");
-            if (!OreDictionary.doesOreNameExist(ingotName)) return;
-            ingots = OreDictionary.getOres(ingotName);
-            if (ingots.isEmpty()) return;
+        List<ItemStack> materials = null;
+        if (!isMaterial) {
+            for (String material : ConfigHandler.detectedMaterials) {
+                String typeName = ore.replace("ore", type);
+                if (!OreDictionary.doesOreNameExist(typeName)) continue;
+                materials = OreDictionary.getOres(typeName);
+                if (materials.isEmpty()) continue;
+                type = material;
+            }
+            if (type.isEmpty()) return;
         }
-        OreEntry entry = new GeneratedOreEntry(name, ingot ? stack : ingots.get(0));
+        OreEntry entry = new GeneratedOreEntry(name, isMaterial ? stack : materials.get(0));
         entries.put(name, entry);
         //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
         if (!s.equals(name)) dupeEntries.put(s, entry);
