@@ -78,7 +78,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 //register the texture
                 map.registerSprite(Constants.loc("items/" + name));
                 itemTextures.add(name);
-                DynaOresLogger.logInfo("Registered texture for " + name);
+                DynaOresLogger.logInfo("Registered item texture for " + name);
             } catch (Exception e) {}
             //register block textures
             map.registerSprite(Constants.loc("items/fallback"));
@@ -87,7 +87,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 //register the texture
                 map.registerSprite(Constants.loc("blocks/" + name));
                 blockTextures.add(name);
-                DynaOresLogger.logInfo("Registered texture for " + name);
+                DynaOresLogger.logInfo("Registered block texture for " + name);
             } catch (Exception e) {}
         }
     }
@@ -108,7 +108,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
         try {
             boolean block = location.getResourcePath().contains("block");
             String[] split = location.getResourcePath().split("\\.")[0].split("/");
-            String name = block ? "block/" + split[split.length - 1].replace("_block", "") : "items/" + split[split.length - 1];
+            String name = block ? "blocks/" + split[split.length - 1].replace("_block", "") : "items/" + split[split.length - 1];
             try {
                 mngr.getAllResources(Constants.loc("textures/" + name + ".png"));
             } catch (Exception e) {

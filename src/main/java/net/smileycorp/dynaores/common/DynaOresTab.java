@@ -2,6 +2,7 @@ package net.smileycorp.dynaores.common;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,6 +29,7 @@ public class DynaOresTab extends CreativeTabs {
             //initialise our stored item list, so we can pull from them later without iterating through the whole item registry again
             items = NonNullList.create();
             displayAllRelevantItems(items);
+            if (items.isEmpty()) items.add(new ItemStack(Blocks.IRON_ORE));
         }
         //mark the tab to refresh the tick after it last refreshed
         //we need to use a variable so it doesn't quickly cycle between item for a tick when the item changes
