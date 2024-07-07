@@ -56,7 +56,7 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 b += colour & 0xFF;
             }
             int c = 0xFF000000 + new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), (int) 255).getRGB();
-            DynaOresLogger.logInfo("Loaded colour " + c + " for " + entry);
+            DynaOresLogger.logInfo("Loaded colour " + new Color(c, true) + " for " + entry);
             return c;
         } catch (Exception e) {
             DynaOresLogger.logError("Error getting colour for " + entry, e);

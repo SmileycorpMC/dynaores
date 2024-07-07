@@ -4,7 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.Tuple;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -26,14 +26,18 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(this);
     }
     
-    public void postInit(FMLPostInitializationEvent event) {
-        DynaOresLogger.logInfo("Detected ores " + OreHandler.INSTANCE.getOreNames());
-    }
+    public void postInit(FMLPostInitializationEvent event) {}
     
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+        OreHandler.INSTANCE.tryRegister("oreCoal", new ItemStack(Blocks.COAL_ORE));
         OreHandler.INSTANCE.tryRegister("oreIron", new ItemStack(Blocks.IRON_ORE));
         OreHandler.INSTANCE.tryRegister("oreGold", new ItemStack(Blocks.GOLD_ORE));
+        OreHandler.INSTANCE.tryRegister("oreDiamond", new ItemStack(Blocks.DIAMOND_ORE));
+        OreHandler.INSTANCE.tryRegister("oreEmerald", new ItemStack(Blocks.EMERALD_ORE));
+        OreHandler.INSTANCE.tryRegister("oreLapis", new ItemStack(Blocks.LAPIS_ORE));
+        OreHandler.INSTANCE.tryRegister("oreRedstone", new ItemStack(Blocks.REDSTONE_ORE));
+        OreHandler.INSTANCE.tryRegister("oreQuartz", new ItemStack(Blocks.QUARTZ_ORE));
     }
     
     //high priority so hopefully fortune will stack with other modifiers, use this as a backup in case mods override Block#getDrops
@@ -53,38 +57,38 @@ public class CommonProxy {
         try {
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
             //get the registered ore entry corresponding to the block we just broke
-            OreEntry entry =  getOre(stack);
-            if (entry == null) return;
-            NonNullList<ItemStack> ores = OreDictionary.getOres(entry.getOre());
+            Tuple<OreEntry, Double> pair = getOre(stack);
+            if (pair == null) return;
+            OreEntry entry = pair.getFirst();
             for (int i = 0; i < drops.size(); i++) {
                 ItemStack drop = drops.get(i);
-                //check the drop is the same ore as the entry we just broke so we don't modify extra or changed drops if other mods added them first
-                if (!OreDictionary.containsMatch(false, ores, drop)) continue;
-                drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, rand)));
+                if (!matches(pair.getFirst(), drop)) continue;
+                drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, pair.getSecond(), rand)));
             }
         } catch (Exception e) {}
     }
     
-    private static OreEntry getOre(ItemStack stack) {
+    //check the drop is the same ore as the entry we just broke, so we don't modify extra or changed drops if other mods added them first
+    private static boolean matches(OreEntry entry, ItemStack stack) {
+        Tuple<OreEntry, Double> pair = getOre(stack);
+        if (pair == null) return false;
+        return pair.getFirst() == entry;
+    }
+    
+    //get a pair of an ore entry that matches the pattern
+    private static Tuple<OreEntry, Double> getOre(ItemStack stack) {
         for (int id : OreDictionary.getOreIDs(stack)) {
             String ore = OreDictionary.getOreName(id);
-            if (ore.contains("ore")) {
-                OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
-                if (entry != null) return entry;
-            }
+            OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
+            if (entry != null) return new Tuple(entry, ConfigHandler.getMultiplier(ore));
         }
         return null;
     }
     
-    //default to 1, might add a config to change this per ore in future
-    private static int getFortune(int fortune, Random rand) {
-        return getFortune(fortune, 1, rand);
-    }
-    
     //ore drop formula copied from diamond ore, it's the same formula used by the ore_drops loot function in modern versions
-    private static int getFortune(int fortune, int base, Random rand) {
-        if (!ConfigHandler.canFortune) return base;
-        int drops = (Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base;
+    private static int getFortune(int fortune, double base, Random rand) {
+        if (!ConfigHandler.canFortune) return (int) base;
+        int drops = (int) ((Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base);
         return drops;
     }
     

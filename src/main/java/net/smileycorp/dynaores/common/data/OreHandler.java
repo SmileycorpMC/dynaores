@@ -33,7 +33,7 @@ public class OreHandler {
             }
             if (type.isEmpty()) return;
         }
-        boolean isMaterial = type.isEmpty();
+        boolean isMaterial = !type.isEmpty();
         String s = ore.replace(isMaterial ? type : "ore", "");
         //make sure we don't accidentally register an entry twice
         if (dupeEntries.containsKey(s)) return;
@@ -50,14 +50,16 @@ public class OreHandler {
         List<ItemStack> materials = null;
         if (!isMaterial) {
             for (String material : ConfigHandler.detectedMaterials) {
-                String typeName = ore.replace("ore", type);
+                String typeName = ore.replace("ore", material);
                 if (!OreDictionary.doesOreNameExist(typeName)) continue;
                 materials = OreDictionary.getOres(typeName);
                 if (materials.isEmpty()) continue;
                 type = material;
+                break;
             }
             if (type.isEmpty()) return;
         }
+        if (materials != null && materials.isEmpty()) return;
         OreEntry entry = new GeneratedOreEntry(name, isMaterial ? stack : materials.get(0));
         entries.put(name, entry);
         //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
@@ -77,6 +79,7 @@ public class OreHandler {
     
     public OreEntry getEntry(String ore) {
         ore = ore.replace("ore", "");
+        for (String material : ConfigHandler.detectedMaterials) ore = ore.replace(material, "");
         return dupeEntries.containsKey(ore) ? dupeEntries.get(ore) : entries.get(ore);
     }
     
