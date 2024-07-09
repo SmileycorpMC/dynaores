@@ -29,7 +29,8 @@ public class ConfigHandler {
             "Wolfram-Tungsten",
             "Chromium-Chrome",
             "Bauxite-Aluminum",
-            "Mercury-Quicksilver"
+            "Mercury-Quicksilver",
+            "Ilmenite-Titanium"
     };
     
     public static String[] detectedMaterials = {
