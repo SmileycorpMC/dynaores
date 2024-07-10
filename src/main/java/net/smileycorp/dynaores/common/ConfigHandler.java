@@ -43,7 +43,7 @@ public class ConfigHandler {
             "End-2"
     };
     
-    private static String[] forceGenerate = {};
+    public static String[] customOres = {};
     
     private static final Map<String, Double> denseOres = Maps.newHashMap();
     private static final Map<String, String> nameMap = Maps.newHashMap();
@@ -58,7 +58,8 @@ public class ConfigHandler {
             ignoredWords = config.get("general", "ignoredWords", ignoredWords, "Words to be ignored in oredictionaries to match variants (e.g. making nether and end variants drop their corresponding ore)?").getStringList();
             otherNames = config.get("general", "otherNames", otherNames, "Ores that are counted as the same types as each other separated by \"-\", e.g Magnetite-Iron will make ores with the name oreMagnetite be treated as oreIron for the purposes of raw ore generation and dropping.").getStringList();
             detectedMaterials = config.get("general", "detectedMaterials", detectedMaterials, "Which types of material are detected?, (by default, just ingots)").getStringList();
-            denseOresStr = config.get("general", "denseOres", denseOresStr, "Ore dictionary names that are used to refer to dense ores and the drop multiplier seperated by \"-\", e.g. Dense-2 will make ores with \"Dense\" in their ore dictionarry drop twice as much raw ore").getStringList();
+            denseOresStr = config.get("general", "denseOres", denseOresStr, "Ore dictionary names that are used to refer to dense ores and the drop multiplier separated by \"-\", e.g. Dense-2 will make ores with \"Dense\" in their ore dictionarry drop twice as much raw ore").getStringList();
+            customOres = config.get("general", "customOres", customOres, "Names of ores and a colour (either in an integer format e.g. or a hex format e.g. 0xD83FFF, if not specified the colour will be white) separated by \"-\", e.g. Chalcopyrite-0x967025 or Cinnabar-8850958").getStringList();
         } catch(Exception e) {} finally {
             if (config.hasChanged()) config.save();
         }

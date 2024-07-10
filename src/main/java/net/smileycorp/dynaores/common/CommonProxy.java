@@ -24,6 +24,7 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         ConfigHandler.syncConfig(event);
         MinecraftForge.EVENT_BUS.register(this);
+        OreHandler.INSTANCE.registerConfigOres();
     }
     
     public void postInit(FMLPostInitializationEvent event) {}
