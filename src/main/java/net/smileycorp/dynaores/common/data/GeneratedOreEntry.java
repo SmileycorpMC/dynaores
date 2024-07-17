@@ -1,8 +1,11 @@
 package net.smileycorp.dynaores.common.data;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.smileycorp.dynaores.client.OreModelLoader;
+
+import java.util.Locale;
 
 public class GeneratedOreEntry extends OreEntry {
     
@@ -17,7 +20,9 @@ public class GeneratedOreEntry extends OreEntry {
     
     @Override
     public String getLocalizedName() {
-        return material.getDisplayName();
+        String key = "material.dynaores." + name.toLowerCase(Locale.US);
+        //check if translation key exists, if not format the oredict name
+        return I18n.canTranslate(key) ? I18n.translateToLocal(key) : material.getDisplayName();
     }
     
     @Override
