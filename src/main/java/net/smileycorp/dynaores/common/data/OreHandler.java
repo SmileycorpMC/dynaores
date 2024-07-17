@@ -3,8 +3,10 @@ package net.smileycorp.dynaores.common.data;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.ConfigHandler;
+import net.smileycorp.dynaores.common.CraftTweakerIntegration;
 import net.smileycorp.dynaores.common.DynaOresLogger;
 import net.smileycorp.dynaores.common.item.IOreItem;
 
@@ -79,6 +81,7 @@ public class OreHandler {
         //put a copy in the entry map if the name is different from the entry, so we don't have to keep iterating through the format list
         if (!s.equals(name)) dupeEntries.put(s, entry);
         DynaOresLogger.logInfo("Registered ore " + name);
+        if (Loader.isModLoaded("crafttweaker") && CraftTweakerIntegration.isRunning()) CraftTweakerIntegration.refreshItems();
     }
     
     //check if the registered ores contain a block to prevent creating unnecessary raw items

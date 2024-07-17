@@ -2,6 +2,8 @@ package net.smileycorp.dynaores.common;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.Tuple;
@@ -55,6 +57,7 @@ public class CommonProxy {
     
     public static void handleDrops(IBlockState state, List<ItemStack> drops, int fortune, Random rand) {
         //use try/catch here because blocks without items can't be oredicted and the game will crash if you try to make one
+        if (Item.getItemFromBlock(state.getBlock()) == Items.AIR) return;
         try {
             ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
             //get the registered ore entry corresponding to the block we just broke

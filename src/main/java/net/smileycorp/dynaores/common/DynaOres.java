@@ -1,6 +1,8 @@
 package net.smileycorp.dynaores.common;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -19,6 +21,7 @@ public class DynaOres {
     
     public DynaOres() {
         DynaOresLogger.clearLog();
+        if (Loader.isModLoaded("crafttweaker"))  MinecraftForge.EVENT_BUS.register(new CraftTweakerIntegration());
     }
     
     @Mod.EventHandler
