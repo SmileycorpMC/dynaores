@@ -3,3 +3,11 @@ items.dynaores.RawGem.name=Uncut %1$s
 items.dynaores.RawOreBlock.name=Block of Raw %1$s
 items.dynaores.RawGemBlock.name=Uncut Block of %1$s
 itemGroup.dynaores.tab=Raw Ores
+
+## Individual raw ores
+# Iron
+item.dynaores.RawIron.name=Raw Iron
+tile.dynaores.RawIronBlock.name=Block of Raw Iron
+# Gold
+item.dynaores.RawGold.name=Raw Gold
+tile.dynaores.RawGoldBlock.name=Block of Raw Gold

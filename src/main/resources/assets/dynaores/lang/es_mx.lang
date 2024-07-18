@@ -1,0 +1,14 @@
+## Translated by KameiB. Jul/2024
+items.dynaores.RawOre.name=%1$s crudo
+items.dynaores.RawGem.name=%1$s no cortado
+items.dynaores.RawOreBlock.name=Bloque de %1$s crudo
+items.dynaores.RawGemBlock.name=Bloque de %1$s no cortado
+itemGroup.dynaores.tab=Raw Ores
+
+## Individual raw ores
+# Iron
+item.dynaores.RawIron.name=Hierro crudo
+tile.dynaores.RawIronBlock.name=Bloque de hierro crudo
+# Gold
+item.dynaores.RawGold.name=Oro crudo
+tile.dynaores.RawGoldBlock.name=Bloque de oro crudo

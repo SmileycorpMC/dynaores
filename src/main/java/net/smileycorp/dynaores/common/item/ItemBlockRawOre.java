@@ -17,9 +17,16 @@ public class ItemBlockRawOre extends ItemBlock implements IOreItem {
     }
     
     @Override
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocalFormatted("items.dynaores.RawOreBlock.name",
-                I18n.translateToLocal(entry.getLocalizedName()).replace("Ingot", "").trim()).trim();
+        // If a lang key exists for this Raw Ore Block, use it.
+        if (I18n.canTranslate(stack.getUnlocalizedName() + ".name")) {
+            return super.getItemStackDisplayName(stack);
+        }
+        else { // If not, generate a name that makes sense (only for English tho. In other languages it turns into "Block of Raw Iron Ingot", etc.)
+            return I18n.translateToLocalFormatted("items.dynaores.RawOreBlock.name",
+                    I18n.translateToLocal(entry.getLocalizedName()).replace("Ingot", "").trim()).trim();
+        }
     }
     
     @Override
