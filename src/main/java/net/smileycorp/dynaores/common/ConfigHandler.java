@@ -12,6 +12,7 @@ public class ConfigHandler {
     
     public static boolean canFortune = true;
     public static boolean invertBlacklist = true;
+    public static boolean rawOreBlocks = true;
     
     private static String[] blacklist = {
             "AncientDebris"
@@ -54,6 +55,7 @@ public class ConfigHandler {
             config.load();
             blacklist = config.get("general", "blacklist", blacklist, "Which ores shouldn't have variants generated for them?").getStringList();
             canFortune = config.get("general", "canFortune", true, "Can ores be fortuned to drop more raw ores?").getBoolean();
+            rawOreBlocks = config.get("general", "rawOreBlocks", true, "Should the mod add block variants for all raw ore entries?").getBoolean();
             invertBlacklist = config.get("general", "invertBlacklist", false, "Whether the blacklist should instead be read as a whitelist, only generating ores for the given names.").getBoolean();
             ignoredWords = config.get("general", "ignoredWords", ignoredWords, "Words to be ignored in oredictionaries to match variants (e.g. making nether and end variants drop their corresponding ore)?").getStringList();
             otherNames = config.get("general", "otherNames", otherNames, "Ores that are counted as the same types as each other separated by \"-\", e.g Magnetite-Iron will make ores with the name oreMagnetite be treated as oreIron for the purposes of raw ore generation and dropping.").getStringList();

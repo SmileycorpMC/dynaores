@@ -43,10 +43,10 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     public int getColourFor(ItemStack stack, OreEntry entry) {
         String name = entry.getName().toLowerCase(Locale.US);
         if (itemTextures.contains(name)) {
-            if (blockTextures.contains(name)) return 0xFFFFFFFF;
+            if (blockTextures.contains(name) || entry.getBlock() == null) return 0xFFFFFFFF;
             stack = new ItemStack(entry.getItem());
         }
-        else if (blockTextures.contains(name)) stack = new ItemStack(entry.getBlock());
+        else if (blockTextures.contains(name) && entry.getBlock() != null) stack = new ItemStack(entry.getBlock());
         return getColourFor(stack).getRGB();
     }
     
