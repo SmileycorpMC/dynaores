@@ -2,8 +2,6 @@ package net.smileycorp.dynaores.common.data;
 
 import net.minecraft.util.text.translation.I18n;
 
-import java.util.Locale;
-
 public class CustomOreEntry extends OreEntry {
     
     private final int colour;
@@ -15,7 +13,7 @@ public class CustomOreEntry extends OreEntry {
     
     @Override
     public String getLocalizedName() {
-        String key = "material.dynaores." + name.toLowerCase(Locale.US);
+        String key = getTranslationKey();
         //check if translation key exists, if not format the oredict name
         return I18n.canTranslate(key) ? I18n.translateToLocal(key) : name.replaceAll("(.)([A-Z])", "$1 $2");
     }

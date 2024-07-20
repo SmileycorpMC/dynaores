@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.smileycorp.dynaores.common.network.PacketHandler;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 public class DynaOres {
@@ -21,6 +23,7 @@ public class DynaOres {
     
     public DynaOres() {
         DynaOresLogger.clearLog();
+        PacketHandler.init();
         if (Loader.isModLoaded("crafttweaker"))  MinecraftForge.EVENT_BUS.register(new CraftTweakerIntegration());
     }
     
@@ -32,6 +35,11 @@ public class DynaOres {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event){
         PROXY.postInit(event);
+    }
+    
+    @Mod.EventHandler
+    public void serverStarting(FMLServerStartingEvent event){
+        PROXY.serverStarting(event);
     }
     
 }

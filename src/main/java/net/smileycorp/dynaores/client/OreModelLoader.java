@@ -5,10 +5,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -37,14 +40,30 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
     protected final List<String> blockTextures = Lists.newArrayList();
     private final OreModelOverrides overrides = new OreModelOverrides();
     
+    public int getColourFor(ItemStack stack, OreEntry entry) {
+        String name = entry.getName().toLowerCase(Locale.US);
+        if (itemTextures.contains(name)) {
+            if (blockTextures.contains(name)) return 0xFFFFFFFF;
+            stack = new ItemStack(entry.getItem());
+        }
+        else if (blockTextures.contains(name)) stack = new ItemStack(entry.getBlock());
+        return getColourFor(stack).getRGB();
+    }
+    
     //find an appropriate colour to tint ores if no texture is provided
-    public int getColourFor(ItemStack ingot, OreEntry entry) {
+    public Color getColourFor(ItemStack stack) {
         try {
-            String name = entry.getName().toLowerCase(Locale.US);
-            if (itemTextures.contains(name)) ingot = new ItemStack(entry.getItem());
-            else if (blockTextures.contains(name)) ingot = new ItemStack(entry.getBlock());
             //get the texture for the corresponding ingot item
-            TextureAtlasSprite sprite = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(ingot, null, null)
+            TextureAtlasSprite sprite;
+            //if the item is a block our standard method doesn't work, so we have to jank a texture;
+            if (stack.getItem() instanceof ItemBlock) {
+                Minecraft mc = Minecraft.getMinecraft();
+                IBlockState state = ((ItemBlock) stack.getItem()).getBlock().getStateForPlacement(mc.world,
+                        new BlockPos(0,0,0), EnumFacing.UP, 0, 0, 0, stack.getMetadata(), mc.player);
+                List<BakedQuad> quads = mc.getBlockRendererDispatcher().getModelForState(state).getQuads(state, EnumFacing.NORTH, 0);
+                if (quads.isEmpty()) return Color.WHITE;
+                sprite = quads.get(0).getSprite();
+            } else sprite = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null)
                     .getQuads(null, null, 0).get(0).getSprite();
             List<Integer> colours = Lists.newArrayList();
             //get all the pixels from the first frame of the sprite with an alpha greater than 0
@@ -55,12 +74,12 @@ public class OreModelLoader implements ICustomModelLoader, ISelectiveResourceRel
                 g += (colour >> 8) & 0xFF;
                 b += colour & 0xFF;
             }
-            int c = 0xFF000000 + new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), (int) 255).getRGB();
-            DynaOresLogger.logInfo("Loaded colour " + new Color(c, true) + " for " + entry);
+            Color c = new Color((int) r / colours.size(), (int) g / colours.size(), (int) b / colours.size(), 255);
+            DynaOresLogger.logInfo("Found colour " + c + " for " + stack);
             return c;
         } catch (Exception e) {
-            DynaOresLogger.logError("Error getting colour for " + entry, e);
-            return 0xFFFFFFFF;
+            DynaOresLogger.logError("Error getting colour for " + stack, e);
+            return Color.WHITE;
         }
     }
     

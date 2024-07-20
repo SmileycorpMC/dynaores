@@ -12,9 +12,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.smileycorp.dynaores.common.command.DynaOresCommand;
+import net.smileycorp.dynaores.common.command.SubCommandGetColour;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
 
@@ -94,6 +97,12 @@ public class CommonProxy {
         if (!ConfigHandler.canFortune) return (int) base;
         int drops = (int) ((Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base);
         return drops;
+    }
+    
+    public void serverStarting(FMLServerStartingEvent event) {
+        DynaOresCommand command = new DynaOresCommand();
+        command.register("getColour", new SubCommandGetColour());
+        event.registerServerCommand(command);
     }
     
 }

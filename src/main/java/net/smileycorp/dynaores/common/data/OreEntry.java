@@ -11,6 +11,8 @@ import net.smileycorp.dynaores.common.block.BlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemBlockRawOre;
 import net.smileycorp.dynaores.common.item.ItemRawOre;
 
+import java.util.Locale;
+
 public abstract class OreEntry {
     
     protected final String name;
@@ -36,6 +38,14 @@ public abstract class OreEntry {
     
     public String getName() {
         return name;
+    }
+    
+    public String getNameLowercase() {
+        return name.replaceAll("(.)([A-Z])", "$1_$2").toLowerCase(Locale.US);
+    }
+    
+    public String getTranslationKey() {
+        return "material.dynaores." + getNameLowercase();
     }
     
     public ItemRawOre getItem() {
