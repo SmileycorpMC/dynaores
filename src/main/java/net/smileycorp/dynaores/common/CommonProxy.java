@@ -18,6 +18,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.command.DynaOresCommand;
 import net.smileycorp.dynaores.common.command.SubCommandGetColour;
+import net.smileycorp.dynaores.common.command.SubCommandGetLang;
+import net.smileycorp.dynaores.common.command.SubCommandGetTextureLoc;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
 
@@ -102,6 +104,8 @@ public class CommonProxy {
     public void serverStarting(FMLServerStartingEvent event) {
         DynaOresCommand command = new DynaOresCommand();
         command.register("getColour", new SubCommandGetColour());
+        command.register("getLang", new SubCommandGetLang());
+        command.register("getTextureLoc", new SubCommandGetTextureLoc());
         event.registerServerCommand(command);
     }
     

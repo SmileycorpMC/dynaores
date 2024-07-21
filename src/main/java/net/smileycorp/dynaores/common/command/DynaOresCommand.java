@@ -34,7 +34,7 @@ public class DynaOresCommand extends CommandBase {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         if (args.length <= 1) return Lists.newArrayList(sub_commands.keySet());
-        if (sub_commands.containsKey(args[1])) sub_commands.get(args[1]).getTabCompletions(ArrayUtils.removeAll(args, 0, 1));
+        if (sub_commands.containsKey(args[0])) sub_commands.get(args[0]).getTabCompletions(ArrayUtils.remove(args, 0));
         return Lists.newArrayList();
     }
     
@@ -42,7 +42,7 @@ public class DynaOresCommand extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (args.length < 1) throw new CommandNotFoundException();
         if (args[0].equals("copy") && args.length > 1 && sender.getCommandSenderEntity() instanceof EntityPlayerMP) {
-            PacketHandler.NETWORK_INSTANCE.sendTo(new ClipboardMessage(String.join(" ", ArrayUtils.removeAll(args, 0))),
+            PacketHandler.NETWORK_INSTANCE.sendTo(new ClipboardMessage(String.join(" ", ArrayUtils.remove(args, 0))),
                     (EntityPlayerMP) sender.getCommandSenderEntity());
             return;
         }

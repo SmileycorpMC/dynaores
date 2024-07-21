@@ -8,6 +8,8 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
+import net.smileycorp.dynaores.common.data.OreEntry;
+import net.smileycorp.dynaores.common.data.OreHandler;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -36,6 +38,28 @@ public class ClientCommandHandler {
         String rgb = "0x" + String.format("%H", ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0));
         player.sendMessage(getCopyableMessage("Average colour of " + stack.getDisplayName() + " is " +
                 String.format("{%d, %d, %d}", r, g, b) + " RBG - " + rgb + " HEX", rgb));
+    }
+    
+    public static void sendLangKey(String ore) {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
+        if (entry == null) {
+            player.sendMessage(new TextComponentString("Unable to run /dynaores getLang " + ore + ", as ore entry does not exist"));
+            return;
+        }
+        String key = entry.getTranslationKey();
+        player.sendMessage(getCopyableMessage("Lang key of ore " + ore + " is " + key, key));
+    }
+    
+    public static void sendTextureLocation(String ore, boolean block) {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
+        if (entry == null) {
+            player.sendMessage(new TextComponentString("Unable to run /dynaores getTextureLoc " + ore + ", as ore entry does not exist"));
+            return;
+        }
+        String loc = "assets/dynaores/textures/" + (block ? "blocks" : "items") + "/" + entry.getNameLowercase() + ".png";
+        player.sendMessage(getCopyableMessage("Texture location of raw " + ore + (block ? "block" : "") + " is " + loc, loc));
     }
     
     public static ITextComponent getCopyableMessage(String message, String clipboardMessage) {

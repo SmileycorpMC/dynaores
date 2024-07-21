@@ -21,6 +21,7 @@ public class CommandExecuteMessage implements IMessage {
     
     public CommandExecuteMessage(byte id, String data) {
         this.id = id;
+        this.data = data;
     }
     
     @Override
@@ -40,6 +41,15 @@ public class CommandExecuteMessage implements IMessage {
             switch (id) {
                 case 0:
                     ClientCommandHandler.sendHeldItemColour();
+                    break;
+                case 1:
+                    ClientCommandHandler.sendLangKey(data);
+                    break;
+                case 2:
+                    ClientCommandHandler.sendTextureLocation(data, false);
+                    break;
+                case 3:
+                    ClientCommandHandler.sendTextureLocation(data, true);
                     break;
             }
         });
