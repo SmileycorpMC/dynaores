@@ -52,7 +52,7 @@ public class CommonProxy {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void dropItem(BlockEvent.HarvestDropsEvent event) {
         if (event.isSilkTouching()) return;
-        handleDrops(event.getState(),  event.getDrops(), event.getFortuneLevel(), new Random());
+        handleDrops(event.getState(),  event.getDrops(), event.getFortuneLevel(), DynaOres.RANDOM);
     }
     
     @SubscribeEvent(priority = EventPriority.LOWEST)

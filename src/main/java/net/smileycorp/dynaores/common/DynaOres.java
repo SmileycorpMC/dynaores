@@ -10,9 +10,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.smileycorp.dynaores.common.network.PacketHandler;
 
+import java.util.Random;
+
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
 public class DynaOres {
     
+    public static final Random RANDOM = new Random();
     public static final CreativeTabs CREATIVE_TAB = new DynaOresTab();
 
     @Mod.Instance(Constants.MODID)
