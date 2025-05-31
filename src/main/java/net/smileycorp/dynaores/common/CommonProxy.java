@@ -72,7 +72,7 @@ public class CommonProxy {
             for (int i = 0; i < drops.size(); i++) {
                 ItemStack drop = drops.get(i);
                 if (!matches(pair.getFirst(), drop)) continue;
-                drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, pair.getSecond(), rand)));
+                drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, pair.getSecond() * stack.getCount(), rand)));
             }
         } catch (Exception e) {}
     }
