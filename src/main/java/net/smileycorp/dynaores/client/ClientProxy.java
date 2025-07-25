@@ -25,7 +25,6 @@ public class ClientProxy extends CommonProxy {
         DynaOresLogger.logInfo("Registering models");
         ModelLoaderRegistry.registerLoader(OreModelLoader.INSTANCE);
         for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
-            System.out.println("ORETEST itemmodel " + entry.getItem().getRegistryName());
             ModelResourceLocation itemLoc = new ModelResourceLocation(Constants.locStr(entry.getName() + ".raw_ore"));
             ModelLoader.setCustomModelResourceLocation(entry.getItem(), 0, itemLoc);
             if (entry.getBlock() != null) {
