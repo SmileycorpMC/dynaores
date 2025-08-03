@@ -5,12 +5,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -32,12 +29,6 @@ public class CommonProxy {
         ConfigHandler.syncConfig(event);
         MinecraftForge.EVENT_BUS.register(this);
         OreHandler.INSTANCE.registerConfigOres();
-    }
-    
-    public void postInit(FMLPostInitializationEvent event) {}
-    
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         OreHandler.INSTANCE.tryRegister("oreCoal", new ItemStack(Blocks.COAL_ORE));
         OreHandler.INSTANCE.tryRegister("oreIron", new ItemStack(Blocks.IRON_ORE));
         OreHandler.INSTANCE.tryRegister("oreGold", new ItemStack(Blocks.GOLD_ORE));
