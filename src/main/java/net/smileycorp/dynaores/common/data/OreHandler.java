@@ -10,6 +10,7 @@ import net.smileycorp.dynaores.common.CraftTweakerIntegration;
 import net.smileycorp.dynaores.common.DynaOresLogger;
 import net.smileycorp.dynaores.common.item.IOreItem;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +23,9 @@ public class OreHandler {
     private final Map<String, OreEntry> dupeEntries = Maps.newHashMap();
     
     public void registerConfigOres() {
-        for (String entry : ConfigHandler.customOres) {
-            String[] split = entry.split("-");
-            String name = split[0];
-            int colour = 0xFFFFFFFF;
-            if (split.length > 1) {
-                try {
-                    colour = Integer.decode(split[1]);
-                } catch (Exception e) {}
-            }
-            entries.put(name, new CustomOreEntry(name, colour));
-        }
+        Arrays.stream(ConfigHandler.customOres).forEach(this::tryRegisterCustom);
     }
-    
+
     //try to register the given oredictionary
     public void tryRegister(String ore, ItemStack stack) {
         //registering our own items causes recursion here, cancel it preemptively before we start doing anything else
@@ -82,6 +73,21 @@ public class OreHandler {
         if (!s.equals(name)) dupeEntries.put(s, entry);
         DynaOresLogger.logInfo("Registered ore " + name);
         if (Loader.isModLoaded("crafttweaker") && CraftTweakerIntegration.isRunning()) CraftTweakerIntegration.refreshItems();
+    }
+
+    //register a custom ore from the config or cache
+    public void tryRegisterCustom(String entry) {
+        if (entry.isEmpty()) return;
+        String[] split = entry.split("-");
+        String name = split[0];
+        int colour = 0xFFFFFFFF;
+        if (split.length > 1) {
+            try {
+                colour = Integer.decode(split[1]);
+            } catch (Exception e) {}
+        }
+        entries.put(name, new CustomOreEntry(name, colour));
+        DynaOresLogger.logInfo("Registered ore " + name);
     }
     
     //check if the registered ores contain a block to prevent creating unnecessary raw items

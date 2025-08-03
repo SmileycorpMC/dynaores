@@ -7,7 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DynaOresLogger {
     
@@ -34,10 +37,15 @@ public class DynaOresLogger {
     public static boolean writeToFile(Object message) {
         return writeToFile(Lists.newArrayList(String.valueOf(message)));
     }
-    
+
+    private static String timestamp() {
+        return new SimpleDateFormat("[HH:mm:ss] ").format(new Date());
+    }
+
     private static boolean writeToFile(List<String> out) {
         try {
-            Files.write(log_file, out, StandardCharsets.UTF_8, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.write(log_file, out.stream().map(str -> timestamp() + str).collect(Collectors.toList()),
+                    StandardCharsets.UTF_8, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

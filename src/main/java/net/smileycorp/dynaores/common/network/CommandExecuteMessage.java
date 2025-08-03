@@ -51,6 +51,12 @@ public class CommandExecuteMessage implements IMessage {
                 case 3:
                     ClientCommandHandler.sendTextureLocation(data, true);
                     break;
+                case 4:
+                    ClientCommandHandler.clearCache();
+                    break;
+                case 5:
+                    ClientCommandHandler.exportCache();
+                    break;
             }
         });
         return null;

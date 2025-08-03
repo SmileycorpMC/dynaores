@@ -8,6 +8,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
+import net.smileycorp.dynaores.common.data.OreCacheLoader;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
 
@@ -61,10 +62,25 @@ public class ClientCommandHandler {
         String loc = "assets/dynaores/textures/" + (block ? "blocks" : "items") + "/" + entry.getNameLowercase() + ".png";
         player.sendMessage(getCopyableMessage("Texture location of raw " + ore + (block ? "block" : "") + " is " + loc, loc));
     }
+
+    public static void clearCache() {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        player.sendMessage(new TextComponentString(OreCacheLoader.INSTANCE.clearCache() ?
+                "Cleared ore cache, please restart the game to see effects" :
+                "Unable to clear ore cache, file does not exist or cannot be accessed"));
+    }
+
+    public static void exportCache() {
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        player.sendMessage(new TextComponentString(OreCacheLoader.INSTANCE.exportCache() ?
+                "Exported ore cache, please restart the game to see effects" :
+                "Unable to export ore cache, file cannot be accessed, or data could not be exported"));
+    }
     
     public static ITextComponent getCopyableMessage(String message, String clipboardMessage) {
         return new TextComponentString(message).setStyle(new Style()
                 .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/dynaores copy " + clipboardMessage))
                 .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to copy \"" + clipboardMessage + "\" to clipboard."))));
     }
+
 }
