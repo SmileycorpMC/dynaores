@@ -3,6 +3,7 @@ package net.smileycorp.dynaores.common.data;
 import com.google.common.io.Files;
 import net.smileycorp.dynaores.common.DynaOresLogger;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Paths;
@@ -39,8 +40,12 @@ public class OreCacheLoader {
         try {
             file.createNewFile();
             try(FileWriter output = new FileWriter(file)) {
-                for (OreEntry entry : OreHandler.INSTANCE.getOres())
-                    output.append(entry.getName() + "-" + entry.getColour() + System.getProperty("line.separator"));
+                for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+                    Color colour = new Color(entry.getColour());
+                    output.append(entry.getName() + "-" + "0x" + String.format("%H", ((colour.getRed() & 0xFF) << 16)
+                            | ((colour.getGreen() & 0xFF) << 8) | ((colour.getBlue() & 0xFF)))
+                            + System.getProperty("line.separator"));
+                }
                 DynaOresLogger.logInfo("Exported cache file to " +  file.getAbsolutePath());
             }
         } catch (Exception e) {

@@ -32,10 +32,10 @@ public class ClientCommandHandler {
             player.sendMessage(new TextComponentString("Unable to run /dynaores getColour, as player is not holding an item"));
             return;
         }
-        Color color = OreModelLoader.INSTANCE.getColourFor(stack);
-        int r = color.getRed();
-        int g = color.getGreen();
-        int b = color.getBlue();
+        Color colour = OreModelLoader.INSTANCE.getColourFor(stack);
+        int r = colour.getRed();
+        int g = colour.getGreen();
+        int b = colour.getBlue();
         String rgb = "0x" + String.format("%H", ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0));
         player.sendMessage(getCopyableMessage("Average colour of " + stack.getDisplayName() + " is " +
                 String.format("{%d, %d, %d}", r, g, b) + " RBG - " + rgb + " HEX", rgb));
