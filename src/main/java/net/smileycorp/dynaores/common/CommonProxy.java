@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.command.*;
 import net.smileycorp.dynaores.common.data.OreCacheLoader;
@@ -36,7 +37,13 @@ public class CommonProxy {
             MinecraftForge.EVENT_BUS.register(new CraftTweakerIntegration());
     }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+        if (!OreCacheLoader.INSTANCE.isActive()) return;
+        for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+            ItemStack material = entry.getMaterial();
+            if (!material.isEmpty()) GameRegistry.addSmelting(entry.getItem(), material, 0.5f);
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void registerRecipes(RegistryEvent.Register<IRecipe> event) {

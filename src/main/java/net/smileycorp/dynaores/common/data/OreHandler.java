@@ -3,7 +3,12 @@ package net.smileycorp.dynaores.common.data;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.smileycorp.dynaores.common.ConfigHandler;
 import net.smileycorp.dynaores.common.CraftTweakerIntegration;
@@ -86,10 +91,47 @@ public class OreHandler {
                 colour = Integer.decode(split[1]);
             } catch (Exception e) {}
         }
-        entries.put(name, new CustomOreEntry(name, colour));
+        entries.put(name, new CustomOreEntry(name, colour, split.length > 2 ?
+                () -> getMaterial(split[2]) : () -> getOredictMaterial(name)));
         DynaOresLogger.logInfo("Registered ore " + name);
     }
-    
+
+    private ItemStack getMaterial(String name) {
+        NBTTagCompound nbt = null;
+        if (name.contains("{")) {
+            String nbtstring = name.substring(name.indexOf("{"));
+            name = name.substring(0, name.indexOf("{"));
+            try {
+                NBTTagCompound parsed = JsonToNBT.getTagFromJson(nbtstring);
+                if (parsed != null) nbt = parsed;
+            } catch (Exception e) {
+                DynaOresLogger.logError("Error parsing nbt for item " + name + " " + e.getMessage(), e);
+            }
+        }
+        String[] nameSplit = name.split(":");
+        if (nameSplit.length >= 2) {
+            ResourceLocation loc = new ResourceLocation(nameSplit[0], nameSplit[1]);
+            int meta;
+            try {
+                meta = nameSplit.length > 2 ? Integer.parseInt(nameSplit[2]) : 0;
+            } catch (Exception e) {
+                meta = 0;
+                DynaOresLogger.logError("Entry" + name + " has a non integer metadata value", e);
+            }
+            if (ForgeRegistries.ITEMS.containsKey(loc)) {
+                ItemStack stack = new ItemStack(ForgeRegistries.ITEMS.getValue(loc), 1, meta);
+                if (nbt != null) stack.setTagCompound(nbt);
+                return stack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private ItemStack getOredictMaterial(String name) {
+        NonNullList<ItemStack> ores = OreDictionary.getOres("ingot" + name);
+        return ores.isEmpty() ? ItemStack.EMPTY : ores.get(0);
+    }
+
     //check if the registered ores contain a block to prevent creating unnecessary raw items
     private boolean hasBlock(List<ItemStack> ores) {
         for (ItemStack ore : ores) if (ore.getItem() instanceof ItemBlock) return true;

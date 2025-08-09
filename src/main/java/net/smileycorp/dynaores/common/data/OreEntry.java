@@ -58,9 +58,11 @@ public abstract class OreEntry {
     public Block getBlock() {
         return block;
     }
-    
+
     public abstract String getLocalizedName();
-    
+
+    public abstract ItemStack getMaterial();
+
     public abstract int getColour();
     
     public void refresh() {}

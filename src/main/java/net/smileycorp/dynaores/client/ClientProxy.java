@@ -27,6 +27,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
         if (OreCacheLoader.INSTANCE.isActive()) return;
         Minecraft mc = Minecraft.getMinecraft();
         //register ore models

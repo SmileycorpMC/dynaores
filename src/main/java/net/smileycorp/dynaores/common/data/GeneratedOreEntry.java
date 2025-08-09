@@ -15,14 +15,19 @@ public class GeneratedOreEntry extends OreEntry {
         this.material = material;
         GameRegistry.addSmelting(item, material, 0.5f);
     }
-    
+
     @Override
     public String getLocalizedName() {
         String key = getTranslationKey();
         //check if translation key exists, if not format the oredict name
         return I18n.canTranslate(key) ? I18n.translateToLocal(key) : material.getDisplayName();
     }
-    
+
+    @Override
+    public ItemStack getMaterial() {
+        return material;
+    }
+
     @Override
     public int getColour() {
         if (colour == 0) colour = OreModelLoader.INSTANCE.getColourFor(material, this);

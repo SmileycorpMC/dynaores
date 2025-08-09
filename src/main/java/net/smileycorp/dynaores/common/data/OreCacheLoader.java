@@ -1,6 +1,7 @@
 package net.smileycorp.dynaores.common.data;
 
 import com.google.common.io.Files;
+import net.minecraft.item.ItemStack;
 import net.smileycorp.dynaores.common.DynaOresLogger;
 
 import java.awt.*;
@@ -42,9 +43,14 @@ public class OreCacheLoader {
             try(FileWriter output = new FileWriter(file)) {
                 for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
                     Color colour = new Color(entry.getColour());
-                    output.append(entry.getName() + "-" + "0x" + String.format("%H", ((colour.getRed() & 0xFF) << 16)
-                            | ((colour.getGreen() & 0xFF) << 8) | ((colour.getBlue() & 0xFF)))
-                            + System.getProperty("line.separator"));
+                    StringBuilder builder = new StringBuilder(entry.getName() + "-" + "0x" + String.format("%H", ((colour.getRed() & 0xFF) << 16)
+                            | ((colour.getGreen() & 0xFF) << 8) | ((colour.getBlue() & 0xFF))));
+                    ItemStack material = entry.getMaterial();
+                    if (!material.isEmpty()) {
+                        builder.append("-" + material.getItem().getRegistryName() + ":" + material.getMetadata());
+                        if (material.hasTagCompound()) builder.append(material.getTagCompound());
+                    }
+                    output.append(builder.append(System.lineSeparator()));
                 }
                 DynaOresLogger.logInfo("Exported cache file to " +  file.getAbsolutePath());
             }
