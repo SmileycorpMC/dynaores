@@ -36,5 +36,10 @@ public class CustomOreEntry extends OreEntry {
     public int getColour() {
         return colour;
     }
+
+    @Override
+    public boolean isCustom() {
+        return true;
+    }
     
 }

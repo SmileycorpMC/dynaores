@@ -13,7 +13,8 @@ public class ConfigHandler {
     public static boolean canFortune = true;
     public static boolean invertBlacklist = true;
     public static boolean rawOreBlocks = true;
-    
+    public static boolean addSmelting = true;
+
     private static String[] blacklist = {
             "AncientDebris"
     };
@@ -62,6 +63,7 @@ public class ConfigHandler {
             detectedMaterials = config.get("general", "detectedMaterials", detectedMaterials, "Which types of material are detected?, (by default, just ingots)").getStringList();
             denseOresStr = config.get("general", "denseOres", denseOresStr, "Ore dictionary names that are used to refer to dense ores and the drop multiplier separated by \"-\", e.g. Dense-2 will make ores with \"Dense\" in their ore dictionarry drop twice as much raw ore").getStringList();
             customOres = config.get("general", "customOres", customOres, "Names of ores and a colour (either in an integer format e.g. or a hex format e.g. 0xD83FFF, if not specified the colour will be white) separated by \"-\", can also specify an item to be the \"ingot\" that it smelts into, e.g. Cinnabar-8850958, Chalcopyrite-0x967025-thermalfoundation:material:128").getStringList();
+            addSmelting = config.get("general", "addSmelting", true, "Should the mod automatically add smelting recipes for all raw ores into ingots?").getBoolean();
         } catch(Exception e) {} finally {
             if (config.hasChanged()) config.save();
         }

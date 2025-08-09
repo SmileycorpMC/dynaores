@@ -38,8 +38,9 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-        if (!OreCacheLoader.INSTANCE.isActive()) return;
+        if (!ConfigHandler.addSmelting) return;
         for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+            if (!entry.isCustom()) continue;
             ItemStack material = entry.getMaterial();
             if (!material.isEmpty()) GameRegistry.addSmelting(entry.getItem(), material, 0.5f);
         }

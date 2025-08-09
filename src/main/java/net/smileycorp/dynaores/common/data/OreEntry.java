@@ -59,6 +59,10 @@ public abstract class OreEntry {
         return block;
     }
 
+    public boolean isCustom() {
+        return false;
+    }
+
     public abstract String getLocalizedName();
 
     public abstract ItemStack getMaterial();
