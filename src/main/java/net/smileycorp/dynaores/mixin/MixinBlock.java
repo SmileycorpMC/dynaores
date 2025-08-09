@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinBlock {
     
     @Inject(at = @At("RETURN"), method = "getDrops(Lnet/minecraft/util/NonNullList;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/IBlockState;I)V", remap = false)
-    public void rawores$getDrops(NonNullList<ItemStack> drops, IBlockAccess access, BlockPos pos, IBlockState state, int fortune, CallbackInfo callback) {
+    public void dynaores$getDrops(NonNullList<ItemStack> drops, IBlockAccess access, BlockPos pos, IBlockState state, int fortune, CallbackInfo callback) {
        CommonProxy.handleDrops(state, drops, fortune, DynaOres.RANDOM);
     }
     
