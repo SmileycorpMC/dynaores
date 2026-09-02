@@ -26,12 +26,12 @@ public abstract class OreEntry {
         item = new ItemRawOre(this);
         block = ConfigHandler.rawOreBlocks ? new BlockRawOre(this) : null;
         //registering in post init is usually a bad idea, but we have to do all our registering after other mods have loaded
-        ForgeRegistries.BLOCKS.register(block);
         ForgeRegistries.ITEMS.register(item);
-        ForgeRegistries.ITEMS.register(new ItemBlockRawOre(this));
         OreDictionary.registerOre("ore" + name, new ItemStack(item));
         OreDictionary.registerOre("raw" + name, new ItemStack(item));
         if (block != null) {
+            ForgeRegistries.BLOCKS.register(block);
+            ForgeRegistries.ITEMS.register(new ItemBlockRawOre(this));
             OreDictionary.registerOre("blockRaw" + name, new ItemStack(block));
             GameRegistry.addShapelessRecipe(Constants.loc("raw" + name), Constants.loc("raw_ore"), new ItemStack(item, 9), Ingredient.fromStacks(new ItemStack(block)));
             GameRegistry.addShapedRecipe(Constants.loc("raw" + name + "block"), Constants.loc("raw_ore_block"), new ItemStack(block),
