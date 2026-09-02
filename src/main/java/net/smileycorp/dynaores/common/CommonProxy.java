@@ -49,6 +49,7 @@ public class CommonProxy {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
         if (OreCacheLoader.INSTANCE.isActive()) return;
+        //register vanilla ores now so they get added to the system properly
         OreHandler.INSTANCE.tryRegister("oreCoal", new ItemStack(Blocks.COAL_ORE));
         OreHandler.INSTANCE.tryRegister("oreIron", new ItemStack(Blocks.IRON_ORE));
         OreHandler.INSTANCE.tryRegister("oreGold", new ItemStack(Blocks.GOLD_ORE));
@@ -76,24 +77,15 @@ public class CommonProxy {
         //use try/catch here because blocks without items can't be oredicted and the game will crash if you try to make one
         if (Item.getItemFromBlock(state.getBlock()) == Items.AIR) return;
         try {
-            ItemStack stack = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
-            //get the registered ore entry corresponding to the block we just broke
-            Tuple<OreEntry, Double> pair = getOre(stack);
-            if (pair == null) return;
-            OreEntry entry = pair.getFirst();
+            //if the block broken isn't an ore return
+            //if (getOre(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state))) == null) return;
             for (int i = 0; i < drops.size(); i++) {
-                ItemStack drop = drops.get(i);
-                if (!matches(pair.getFirst(), drop)) continue;
-                drops.set(i, new ItemStack(entry.getItem(), getFortune(fortune, pair.getSecond() * stack.getCount(), rand)));
+                ItemStack stack = drops.get(i);
+                Tuple<OreEntry, Double> pair = getOre(stack);
+                if (pair == null) continue;
+                drops.set(i, new ItemStack(pair.getFirst().getItem(), getFortune(fortune, pair.getSecond() * stack.getCount(), rand)));
             }
         } catch (Exception e) {}
-    }
-
-    //check the drop is the same ore as the entry we just broke, so we don't modify extra or changed drops if other mods added them first
-    private static boolean matches(OreEntry entry, ItemStack stack) {
-        Tuple<OreEntry, Double> pair = getOre(stack);
-        if (pair == null) return false;
-        return pair.getFirst() == entry;
     }
 
     //get a pair of an ore entry that matches the pattern
@@ -101,7 +93,7 @@ public class CommonProxy {
         for (int id : OreDictionary.getOreIDs(stack)) {
             String ore = OreDictionary.getOreName(id);
             OreEntry entry = OreHandler.INSTANCE.getEntry(ore);
-            if (entry != null) return new Tuple(entry, ConfigHandler.getMultiplier(ore));
+            if (entry != null) return new Tuple<>(entry, ConfigHandler.getMultiplier(ore));
         }
         return null;
     }
@@ -109,8 +101,7 @@ public class CommonProxy {
     //ore drop formula copied from diamond ore, it's the same formula used by the ore_drops loot function in modern versions
     private static int getFortune(int fortune, double base, Random rand) {
         if (!ConfigHandler.canFortune) return (int) base;
-        int drops = (int) ((Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base);
-        return drops;
+        return (int) ((Math.max(0, rand.nextInt(fortune + 2) - 1) + 1) * base);
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
