@@ -41,7 +41,12 @@ public class DynaOresTab extends CreativeTabs {
         }
         return stack;
     }
-    
+
+    @Override
+    public boolean hasSearchBar() {
+        return true;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public ItemStack getTabIconItem() {
