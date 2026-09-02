@@ -143,6 +143,7 @@ public class OreHandler {
     }
     
     public OreEntry getEntry(String ore) {
+        if (!ore.contains("ore")) return null;
         ore = ore.replace("ore", "");
         for (String material : ConfigHandler.detectedMaterials) ore = ore.replace(material, "");
         return dupeEntries.containsKey(ore) ? dupeEntries.get(ore) : entries.get(ore);

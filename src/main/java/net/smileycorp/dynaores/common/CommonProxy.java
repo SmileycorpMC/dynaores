@@ -60,7 +60,6 @@ public class CommonProxy {
         OreHandler.INSTANCE.tryRegister("oreQuartz", new ItemStack(Blocks.QUARTZ_ORE));
     }
 
-    //high priority so hopefully fortune will stack with other modifiers, use this as a backup in case mods override Block#getDrops
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void dropItem(BlockEvent.HarvestDropsEvent event) {
         if (event.isSilkTouching()) return;
@@ -74,8 +73,6 @@ public class CommonProxy {
     }
 
     public static void handleDrops(IBlockState state, List<ItemStack> drops, int fortune, Random rand) {
-        //use try/catch here because blocks without items can't be oredicted and the game will crash if you try to make one
-        if (Item.getItemFromBlock(state.getBlock()) == Items.AIR) return;
         try {
             //if the block broken isn't an ore return
             //if (getOre(new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state))) == null) return;
