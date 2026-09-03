@@ -16,7 +16,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.smileycorp.dynaores.common.CommonProxy;
 import net.smileycorp.dynaores.common.Constants;
 import net.smileycorp.dynaores.common.DynaOresLogger;
