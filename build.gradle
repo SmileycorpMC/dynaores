@@ -61,9 +61,9 @@ minecraft {
     }
 }
 
-mixin {
+/*mixin {
     add sourceSets.main, "mixins.dynaores.refmap.json"
-}
+}*/
 
 repositories {
     maven { url = 'https://repo.spongepowered.org/maven' }
@@ -103,7 +103,7 @@ jar {
     }
 }
 
-shadowJar {
+/*shadowJar {
 	classifier = ''
 	exclude 'LICENSE.txt'
 	dependencies {
@@ -115,7 +115,7 @@ build.dependsOn(shadowJar)
 
 reobf {
     shadowJar {}
-}
+}*/
 
 processResources {
     inputs.property "version", project.version
