@@ -2,8 +2,8 @@
 {
   "modid": "dynaores",
   "name": "Dynamic Raw Ores",
-  "description": "Add Raw Ore Variants For All Modded Ores to 1.12",
-  "version": "1.0.4b",
+  "description": "",
+  "version": "1.0.5",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
