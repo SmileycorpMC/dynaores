@@ -16,12 +16,15 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.smileycorp.dynaores.common.CommonProxy;
 import net.smileycorp.dynaores.common.Constants;
 import net.smileycorp.dynaores.common.DynaOresLogger;
 import net.smileycorp.dynaores.common.data.OreCacheLoader;
 import net.smileycorp.dynaores.common.data.OreEntry;
 import net.smileycorp.dynaores.common.data.OreHandler;
+
+import java.util.Objects;
 
 public class ClientProxy extends CommonProxy {
 
@@ -36,7 +39,7 @@ public class ClientProxy extends CommonProxy {
         ItemModelMesher mesher = mc.getRenderItem().getItemModelMesher();
         ItemColors itemColours = mc.getItemColors();
         BlockColors blockColors = mc.getBlockColors();
-        for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+        OreHandler.INSTANCE.getOres().parallelStream().forEach(entry -> {
             ModelResourceLocation itemLoc = new ModelResourceLocation(Constants.locStr(entry.getName() + ".raw_ore"));
             ModelLoader.setCustomModelResourceLocation(entry.getItem(), 0, itemLoc);
             //have to manually copy entries to the model mesher because we register our model definitions too late for the game to automatically do it
@@ -53,7 +56,7 @@ public class ClientProxy extends CommonProxy {
                 itemColours.registerItemColorHandler(OreModelLoader.INSTANCE::getColour, entry.getBlock());
                 blockColors.registerBlockColorHandler(OreModelLoader.INSTANCE::getColour, entry.getBlock());
             }
-        }
+        });
         //refresh textures and models
         FMLClientHandler.instance().refreshResources(VanillaResourceType.TEXTURES, VanillaResourceType.MODELS);
     }
@@ -64,7 +67,7 @@ public class ClientProxy extends CommonProxy {
         //register ore models
         DynaOresLogger.logInfo("Registering models");
         ModelLoaderRegistry.registerLoader(OreModelLoader.INSTANCE);
-        for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+        OreHandler.INSTANCE.getOres().parallelStream().forEach(entry -> {;
             ModelResourceLocation itemLoc = new ModelResourceLocation(Constants.locStr(entry.getName() + ".raw_ore"));
             ModelLoader.setCustomModelResourceLocation(entry.getItem(), 0, itemLoc);
             if (entry.getBlock() != null) {
@@ -73,30 +76,26 @@ public class ClientProxy extends CommonProxy {
                 StateMapperOreBlock mapper = new StateMapperOreBlock(blockLoc);
                 ModelLoader.setCustomStateMapper(entry.getBlock(), mapper);
             }
-        }
+        });
     }
     
     @SubscribeEvent
     public void onBlockColorRegister(ColorHandlerEvent.Block event) {
         if (!OreCacheLoader.INSTANCE.isActive()) return;
         BlockColors blockColors = event.getBlockColors();
-        for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
-            if (entry.getBlock() != null) {
-                blockColors.registerBlockColorHandler(OreModelLoader.INSTANCE::getColour, entry.getBlock());
-            }
-        }
+        OreHandler.INSTANCE.getOres().parallelStream().map(OreEntry::getBlock).filter(Objects::nonNull)
+                .forEach(block -> blockColors.registerBlockColorHandler(OreModelLoader.INSTANCE::getColour, block));
     }
     
     @SubscribeEvent
     public void onItemColorRegister(ColorHandlerEvent.Item event) {
         if (!OreCacheLoader.INSTANCE.isActive()) return;
         ItemColors itemColours = event.getItemColors();
-        for (OreEntry entry : OreHandler.INSTANCE.getOres()) {
+        OreHandler.INSTANCE.getOres().parallelStream().forEach(entry -> {
             itemColours.registerItemColorHandler(OreModelLoader.INSTANCE::getColour, entry.getItem());
-            if (entry.getBlock() != null) {
-                itemColours.registerItemColorHandler(OreModelLoader.INSTANCE::getColour, entry.getBlock());
-            }
-        }
+            if (entry.getBlock() == null) return;
+            itemColours.registerItemColorHandler(OreModelLoader.INSTANCE::getColour, entry.getBlock());
+        });
     }
     
     @SubscribeEvent(priority = EventPriority.LOW)
